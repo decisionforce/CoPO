@@ -1,5 +1,6 @@
 from copo.algo_ippo.ippo_cl import IPPOCL, ChangeNCallback
-from copo.train import train, get_train_parser
+from copo.train.train import train
+from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env
 from metadrive.envs.marl_envs import MultiAgentIntersectionEnv
 from ray import tune

@@ -1,7 +1,8 @@
 from copo.algo_ippo.ippo import IPPOTrainer
 from copo.algo_svo.svo_env import get_svo_env
 from copo.callbacks import MultiAgentDrivingCallbacks
-from copo.train import train, get_train_parser
+from copo.train.train import train
+from copo.train.utils import get_train_parser
 from metadrive.envs.marl_envs import MultiAgentRoundaboutEnv
 from ray import tune
 

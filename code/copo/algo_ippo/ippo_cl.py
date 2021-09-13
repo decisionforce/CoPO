@@ -6,7 +6,8 @@ Tutorial:
 
 from copo.algo_ippo.ippo import IPPOTrainer, validate_config_add_multiagent, PPO_valid, PPOTFPolicy
 from copo.callbacks import MultiAgentDrivingCallbacks
-from copo.train import train, get_train_parser
+from copo.train.train import train
+from copo.train.utils import get_train_parser
 from ray import tune
 
 

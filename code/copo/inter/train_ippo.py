@@ -1,6 +1,7 @@
 from copo.callbacks import MultiAgentDrivingCallbacks
 from copo.round.train_ippo import IPPOTrainer
-from copo.train import train, get_train_parser
+from copo.train.train import train
+from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env
 from metadrive.envs.marl_envs import MultiAgentIntersectionEnv
 from ray import tune

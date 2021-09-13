@@ -1,6 +1,7 @@
 from copo.algo_ccppo.ccppo import CCTrainerForMAOurEnvironment, get_ccppo_env, register_cc_model
 from copo.callbacks import MultiAgentDrivingCallbacks
-from copo.train import train, get_train_parser
+from copo.train.train import train
+from copo.train.utils import get_train_parser
 from metadrive.envs.marl_envs import MultiAgentIntersectionEnv
 from ray import tune
 

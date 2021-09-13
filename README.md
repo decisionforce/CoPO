@@ -30,15 +30,15 @@ pip install -e .
 As a quick start, you can start training CoPO in Intersection environment immediately after installation by running:
 
 ```
-cd code/copo/inter
-python train_copo_dist.py --exp-name inter_copo_dist 
+cd code/copo/
+python inter/train_copo_dist.py --exp-name inter_copo_dist 
 ```
 
 The general way to run training is following:
 
 ```
-cd code/copo/inter
-python train_copo_dist.py --exp-name inter_copo_dist 
+cd code/copo/
+python ENV/train_ALGO.py --exp-name EXPNAME 
 ```
 
 Here `ENV` refers to the shorthand of environments:
@@ -57,10 +57,11 @@ and `ALGO` is the shorthand for algorithms:
 ippo  # Individual Policy Optimization
 ccppo  # Mean Field Policy Optimization
 cl  # Curriculum Learning
-copo  # Coordinated Policy Optimiztion (Ours)
+copo_dist  # Coordinated Policy Optimiztion (Ours)
+copo_dist_cc  # Coordinated Policy Optimiztion with Centralized Critics
 ```
 
-finally the `EXPNAME` is arbitrary name to denote the experiment (with 8 concurrent trials), such as `roundabout_copo`.
+finally the `EXPNAME` is arbitrary name to denote the experiment (with multiple concurrent trials), such as `roundabout_copo`.
 
 
 ## Visualization

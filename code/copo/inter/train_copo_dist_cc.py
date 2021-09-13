@@ -3,7 +3,8 @@ from copo.algo_copo.copo import CoPO
 from copo.algo_svo.svo_env import get_svo_env
 from copo.callbacks import MultiAgentDrivingCallbacks
 from copo.ccenv import get_ccenv
-from copo.train import train, get_train_parser
+from copo.train.train import train
+from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env
 from metadrive.envs.marl_envs import MultiAgentIntersectionEnv
 from ray import tune
