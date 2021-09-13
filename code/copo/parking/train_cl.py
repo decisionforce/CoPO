@@ -4,7 +4,7 @@ from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env
 from metadrive.envs.marl_envs import MultiAgentParkingLotEnv
 from ray import tune
-
+from copo.ccenv import get_change_n_env
 if __name__ == "__main__":
     args = get_train_parser().parse_args()
     exp_name = args.exp_name or "TEST"
@@ -12,7 +12,7 @@ if __name__ == "__main__":
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
-        env=get_rllib_compatible_env(MultiAgentParkingLotEnv),
+        env=get_rllib_compatible_env(get_change_n_env(MultiAgentParkingLotEnv)),
         env_config=dict(
             start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
             num_agents=10,

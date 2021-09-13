@@ -1,4 +1,5 @@
 from copo.algo_ippo.ippo_cl import IPPOCL, ChangeNCallback
+from copo.ccenv import get_change_n_env
 from copo.train.train import train
 from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env
@@ -12,7 +13,7 @@ if __name__ == "__main__":
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
-        env=get_rllib_compatible_env(MultiAgentTollgateEnv),
+        env=get_rllib_compatible_env(get_change_n_env(MultiAgentTollgateEnv)),
         env_config=dict(
             start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
             num_agents=40,

@@ -72,11 +72,20 @@ We provide the trained models for all algorithms in all environments. A simple c
 cd copo
 python vis.py 
 
-# In default, we provide you the CoPO population in Intersection environment. If you want to see others, try:
+# In default, we provide you the CoPO population in Intersection environment. 
+# If you want to see others, try:
 python vis.py --env round --algo ippo
 
 # Or you can use the native renderer for 3D rendering:
+# (Press H to show helper message)
 python vis.py --env tollgate --algo cl --use_native_render
 ```
 
-Thanks!! We hope you enjoy the interesting behaviors learned by the agents in this work!!
+We hope you enjoy the interesting behaviors learned by the agents in this work! 
+Please feel free to contact us if you have any questions or suggestions!
+Thanks!! 
+
+## Citation
+
+Working in Progress.
+ 

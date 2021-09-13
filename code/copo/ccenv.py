@@ -70,11 +70,15 @@ def get_ccenv(env_class):
 
 def get_change_n_env(env_class):
     class ChangeNEnv(env_class):
+        def __init__(self, config):
+            self._raw_input_config = copy.deepcopy(config)
+            super(ChangeNEnv, self).__init__(config)
+
         def close_and_reset_num_agents(self, num_agents):
             config = copy.deepcopy(self._raw_input_config)
             self.close()
             config["num_agents"] = num_agents
-            super(env_class, self).__init__(config)
+            super(ChangeNEnv, self).__init__(config)
 
     name = env_class.__name__
     name = "CL{}".format(name)

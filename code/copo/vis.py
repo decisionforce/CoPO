@@ -6,7 +6,7 @@ from metadrive.envs.marl_envs import MultiAgentBottleneckEnv, MultiAgentRoundabo
 
 
 def get_env(env_name, use_native_render=False):
-    config = {"use_render": use_native_render, "fast": use_native_render}
+    config = {"use_render": use_native_render}
     if env_name == "inter":
         return MultiAgentIntersectionEnv(config)
     elif env_name == "round":
