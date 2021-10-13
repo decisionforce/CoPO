@@ -1,5 +1,6 @@
 """
-Comparison to a fully cooperative setting where the global reward (sum of all agents’ reward) is maximized.
+ Each agent maximizes the total local reward (i.e. neighbors’ and own reward).
+ This is very close to phi=90 degrees but includes the agent’s own reward.
 """
 from copo.algo_ippo.ippo import DEFAULT_IPPO_CONFIG
 from copo.algo_svo.svo_env import get_svo_env
@@ -40,7 +41,8 @@ if __name__ == "__main__":
         env_config=dict(
             start_seed=tune.grid_search([5000, 6000, 7000]),
             force_svo=tune.grid_search([1.0]),
-            neighbours_distance=tune.grid_search([10000]),
+            neighbours_distance=tune.grid_search([10]),
+            include_ego_reward=tune.grid_search([True]),
         ),
 
         # ===== Resource =====
