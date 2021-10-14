@@ -61,6 +61,8 @@ class SVOEnv:
                 svo_normal_std=0.3,  # The initial STD of normal distribution, might change by calling functions.
                 return_native_reward=False,
 
+                include_ego_reward=False,
+
                 # Whether to force set the svo
                 force_svo=-100
             )
@@ -125,6 +127,10 @@ class SVOEnv:
 
         for k, own_r in r.items():
             other_rewards = []
+
+            if self.config["include_ego_reward"]:
+                other_rewards.append(own_r)
+
             # neighbours = self._find_k_nearest(k, K)
             neighbours = self._find_in_range_for_svo(k, self.config["neighbours_distance"])
             for other_k in neighbours:
