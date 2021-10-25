@@ -1,5 +1,10 @@
 # Code for Coordinated Policy Optimization
 
+[**Webpage**](https://decisionforce.github.io/CoPO) | 
+[**Code**](https://github.com/decisionforce/CoPO) | 
+**Video**| 
+**Paper**
+
 Hi there! This is the source code of the paper “Learning to Simulate Self-driven Particles System with Coordinated Policy Optimization”. 
 
 

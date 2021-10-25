@@ -53,10 +53,12 @@
     <table border="0" align="center">
         <tr>
             <td align="center" style="padding: 0pt 0 15pt 0">
-                <a class="bar" href="https://decisionforce.github.io/EGPO"><b>Webpage</b></a> |
-                <a class="bar" href="https://github.com/decisionforce/EGPO"><b>Code</b></a> |
+                <a class="bar" href="https://decisionforce.github.io/CoPO"><b>Webpage</b></a> |
+                <a class="bar" href="https://github.com/decisionforce/CoPO"><b>Code</b></a> |
+                Video |
+                Paper
 <!--                <a class="bar" href="https://www.youtube.com/embed/mu2WO&#45;&#45;B5C8"><b>Video</b></a> |-->
-                <a class="bar" href="https://arxiv.org/pdf/2110.06831.pdf"><b>Paper</b></a>
+<!--                <a class="bar" href="https://arxiv.org/pdf/2110.06831.pdf"><b>Paper</b></a>-->
             </td>
         </tr>
     </table>
@@ -66,63 +68,62 @@
 
 
 <div class="section">
-    <!--    <div class="title" id="lang">Demonstrative Videos</div>-->
-    <div align="center">
-        <table width="90%" style="margin: -20pt -5pt; text-align: center;">
-            <tr>
-                <td>
-                    <video style="display:block; width:98%; height:auto; "
-                           autoplay="autoplay" controls muted loop="loop">
-                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_vs_ppo.mp4"
-                                type="video/mp4"/>
-                    </video>
-                    <div style="top: -10%;">EGPO-trained agent exhibits safer driving behaviors than the PPO agent and obtains much lower cost.</div><br>
-                </td>
-            </tr>
-            <!--        </table>-->
-            <!--        <br>-->
-            <!--        <br>-->
-            <!--        <table width="95%" style="margin: 0 0; text-align: center;">-->
-            <!--            <tr>-->
-            <!--                <td>-->
-            <!--                    <video style="display:block; width:98%; height:auto;"-->
-            <!--                           autoplay="autoplay" controls muted loop="loop">-->
-            <!--                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_showtime.mp4"-->
-            <!--                                type="video/mp4"/>-->
-            <!--                    </video>-->
-            <!--                </td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>-->
-            <!--                    The behaviors of EGPO-trained agents.-->
-            <!--                </td>-->
-            <!--            </tr>-->
-        </table>
-    </div>
+        <div class="title" id="lang">Self-Driven Particles</div>
+        Self-Driven Particles (SDP) describe one common type of multi-agent systems in daily life, such as fish school, flocking birds and traffic flows.
+        However, it is expensive and time-consuming to simulate SDP through rules and heuristics, which motivates us to seek an automatic way to achieve this.
+        Multi-agent Reinforcement Learning (MARL) is appealing to lean controllers and then actuate the group automatically.
+        Existing methods fall into three traditional MARL categories: fully-cooperative, fully-competitive and mixed both, which fail to
+        capture the essence of SDP: each agent pursues its own goal and constantly changes its cooperative or competitive behaviors with its nearby agents.
+
+        INSERT FIG TO ILLUSTRATE SDP
 </div>
 
 
-<!-- === Overview Section Starts === -->
 <div class="section">
-    <div class="title" id="lang">Expert Guided Policy Optimization (EGPO)</div>
-    <div class="body">
-        <div class="teaser">
-            <img src="images/framework1.png">
-        </div>
-
-        <div class="text">
-            <br>
-            <p>
-                We develop a novel <b>Expert Guided Policy Optimization
-                (EGPO)</b> method, integrating the guardian in the loop of RL, which contains an expert policy and a
-                switch function to decide when to intervene.
-                We utilize constrained optimization and offline RL techniques to tackle trivial solutions
-                and improve the learning on expert's demonstrations.
-                Safe driving experiments show that our method achieves superior training and
-                test-time safety, sample efficiency, and generalizability.
-            </p>
-        </div>
+        <div class="title" id="lang">Behaviors of CoPO Agents</div>
+    <div class="text">To simulate one of the common multi-agent systems, Self-Driven Particles(SDP),
+                        we propose coordinated policy optimization (CoPO).
+                        Exploiting local coordination and global coordination, the behaviors of CoPO agents reflect the key features of SDP:
+                        the relationship between agents are varied and dynamic over time.
+                        ADD VIDEO
     </div>
+
+<!--    <div align="center">-->
+<!--        <table width="90%" style="margin: -20pt -5pt; text-align: center;">-->
+<!--            <tr>-->
+<!--                <td>-->
+<!--                    <video style="display:block; width:98%; height:auto; "-->
+<!--                           autoplay="autoplay" controls muted loop="loop">-->
+<!--                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_vs_ppo.mp4"-->
+<!--                                type="video/mp4"/>-->
+<!--                    </video>-->
+<!--                    <div style="top: -10%;">The behaviors of agents trained via CoPO</div><br>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            &lt;!&ndash;        </table>&ndash;&gt;-->
+<!--            &lt;!&ndash;        <br>&ndash;&gt;-->
+<!--            &lt;!&ndash;        <br>&ndash;&gt;-->
+<!--            &lt;!&ndash;        <table width="95%" style="margin: 0 0; text-align: center;">&ndash;&gt;-->
+<!--            &lt;!&ndash;            <tr>&ndash;&gt;-->
+<!--            &lt;!&ndash;                <td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                    <video style="display:block; width:98%; height:auto;"&ndash;&gt;-->
+<!--            &lt;!&ndash;                           autoplay="autoplay" controls muted loop="loop">&ndash;&gt;-->
+<!--            &lt;!&ndash;                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_showtime.mp4"&ndash;&gt;-->
+<!--            &lt;!&ndash;                                type="video/mp4"/>&ndash;&gt;-->
+<!--            &lt;!&ndash;                    </video>&ndash;&gt;-->
+<!--            &lt;!&ndash;                </td>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </tr>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <tr>&ndash;&gt;-->
+<!--            &lt;!&ndash;                <td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                    The behaviors of EGPO-trained agents.&ndash;&gt;-->
+<!--            &lt;!&ndash;                </td>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </tr>&ndash;&gt;-->
+<!--        </table>-->
+<!--    </div>-->
+</div>
+
+<div class="section">
+    <div class="title" id="lang">Method</div>
 </div>
 
 
@@ -131,28 +132,27 @@
     <div class="title" id="lang">Experiment Result</div>
     <div class="body">
         <div class="text">
-            We show that the proposed framework can achieve superior training efficiency and performance
-            as well as extremely low training safety violations in the safe driving tasks of
-            <a href="https://github.com/decisionforce/metadrive">MetaDrive Simulator</a>.
+            Supported by <a href="https://github.com/decisionforce/metadrive">MetaDrive Simulator</a>, we simulate the SDP in five typical traffic scenarios: roundabout, intersection, bottleneck, tollgate and parking-lot.
+            We show that proposed framework outperform other baselines in three aspects: success rate, efficiency and safety.
         </div>
         <div class="teaser"><img
-                src="images/result.png">
+                src="images/main_result.png">
         </div>
     </div>
 </div>
 <!-- === Result Section Ends === -->
 
-<div class="section">
-    <div class="title" id="lang">Demo Video</div>
-    <div class="body">
-        <div class="vedio" style="position: relative; padding-top: 50%; margin: 20pt auto; text-align: center;">
-            <iframe src="https://www.youtube.com/embed/mu2WO--B5C8" frameborder=0
-                    style="position: absolute; top: 2.5%; left: 2.5%; width: 95%; height: 100%;"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
-        </div>
-    </div>
-</div>
+<!--<div class="section">-->
+<!--    <div class="title" id="lang">Demo Video</div>-->
+<!--    <div class="body">-->
+<!--        <div class="vedio" style="position: relative; padding-top: 50%; margin: 20pt auto; text-align: center;">-->
+<!--            <iframe src="https://www.youtube.com/embed/mu2WO&#45;&#45;B5C8" frameborder=0-->
+<!--                    style="position: absolute; top: 2.5%; left: 2.5%; width: 95%; height: 100%;"-->
+<!--                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"-->
+<!--                    allowfullscreen></iframe>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <!-- === Reference Section Starts === -->
 <div class="section">
