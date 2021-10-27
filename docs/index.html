@@ -38,16 +38,16 @@
     <div class="author">
         <p style="text-align:center">Neural Information Processing Systems (NeurIPS) 2021</p>
         <a href="https://pengzhenghao.github.io" target="_blank">Zhenghao Peng</a><sup>1</sup>,&nbsp;&nbsp;
-        <a href="#">Quanyi Li</a><sup>3</sup>,&nbsp;
+        <a href="https://quanyili.github.io">Quanyi Li</a><sup>3</sup>,&nbsp;
         <a href="#">Chunxiao Liu</a><sup>2</sup>,&nbsp;
-        <a href="http://bzhou.ie.cuhk.edu.hk" target="_blank">Bolei Zhou</a><sup>1</sup>&nbsp;
+        <a href="https://boleizhou.github.io" target="_blank">Bolei Zhou</a><sup>1</sup>&nbsp;
     </div>
 
     <div class="institution" style="font-size: 11pt;">
         <div>
             <sup>1</sup>The Chinese University of Hong Kong,
             <sup>2</sup>SenseTime Research <br>
-            <sup>3</sup>Centre for Perceptual and Interactive Intelligence<br>   
+            <sup>3</sup>Centre for Perceptual and Interactive Intelligence<br>
         </div>
     </div>
     <table border="0" align="center">
@@ -57,8 +57,8 @@
                 <a class="bar" href="https://github.com/decisionforce/CoPO"><b>Code</b></a> |
                 Video |
                 Paper
-<!--                <a class="bar" href="https://www.youtube.com/embed/mu2WO&#45;&#45;B5C8"><b>Video</b></a> |-->
-<!--                <a class="bar" href="https://arxiv.org/pdf/2110.06831.pdf"><b>Paper</b></a>-->
+                <!--                <a class="bar" href="https://www.youtube.com/embed/mu2WO&#45;&#45;B5C8"><b>Video</b></a> |-->
+                <!--                <a class="bar" href="https://arxiv.org/pdf/2110.06831.pdf"><b>Paper</b></a>-->
             </td>
         </tr>
     </table>
@@ -68,58 +68,63 @@
 
 
 <div class="section">
-        <div class="title" id="lang">Self-Driven Particles</div>
-        Self-Driven Particles (SDP) describe one common type of multi-agent systems in daily life, such as fish school, flocking birds and traffic flows.
-        However, it is expensive and time-consuming to simulate SDP through rules and heuristics, which motivates us to seek an automatic way to achieve this.
-        Multi-agent Reinforcement Learning (MARL) is appealing to lean controllers and then actuate the group automatically.
-        Existing methods fall into three traditional MARL categories: fully-cooperative, fully-competitive and mixed both, which fail to
-        capture the essence of SDP: each agent pursues its own goal and constantly changes its cooperative or competitive behaviors with its nearby agents.
+    <div class="title" id="lang">Self-Driven Particles</div>
+    Self-Driven Particles (SDP) describe one common type of multi-agent systems in daily life, such as fish school,
+    flocking birds and traffic flows.
+    However, it is expensive and time-consuming to simulate SDP through rules and heuristics, which motivates us to seek
+    an automatic way to achieve this.
+    Multi-agent Reinforcement Learning (MARL) is appealing to lean controllers and then actuate the group automatically.
+    Existing methods fall into three traditional MARL categories: fully-cooperative, fully-competitive and mixed both,
+    which fail to
+    capture the essence of SDP: each agent pursues its own goal and constantly changes its cooperative or competitive
+    behaviors with its nearby agents.
 
-        INSERT FIG TO ILLUSTRATE SDP
+    INSERT FIG TO ILLUSTRATE SDP
 </div>
 
 
 <div class="section">
-        <div class="title" id="lang">Behaviors of CoPO Agents</div>
+    <div class="title" id="lang">Behaviors of CoPO Agents</div>
     <div class="text">To simulate one of the common multi-agent systems, Self-Driven Particles(SDP),
-                        we propose coordinated policy optimization (CoPO).
-                        Exploiting local coordination and global coordination, the behaviors of CoPO agents reflect the key features of SDP:
-                        the relationship between agents are varied and dynamic over time.
-                        ADD VIDEO
+        we propose coordinated policy optimization (CoPO).
+        Exploiting local coordination and global coordination, the behaviors of CoPO agents reflect the key features of
+        SDP:
+        the relationship between agents are varied and dynamic over time.
+        ADD VIDEO
     </div>
 
-<!--    <div align="center">-->
-<!--        <table width="90%" style="margin: -20pt -5pt; text-align: center;">-->
-<!--            <tr>-->
-<!--                <td>-->
-<!--                    <video style="display:block; width:98%; height:auto; "-->
-<!--                           autoplay="autoplay" controls muted loop="loop">-->
-<!--                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_vs_ppo.mp4"-->
-<!--                                type="video/mp4"/>-->
-<!--                    </video>-->
-<!--                    <div style="top: -10%;">The behaviors of agents trained via CoPO</div><br>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            &lt;!&ndash;        </table>&ndash;&gt;-->
-<!--            &lt;!&ndash;        <br>&ndash;&gt;-->
-<!--            &lt;!&ndash;        <br>&ndash;&gt;-->
-<!--            &lt;!&ndash;        <table width="95%" style="margin: 0 0; text-align: center;">&ndash;&gt;-->
-<!--            &lt;!&ndash;            <tr>&ndash;&gt;-->
-<!--            &lt;!&ndash;                <td>&ndash;&gt;-->
-<!--            &lt;!&ndash;                    <video style="display:block; width:98%; height:auto;"&ndash;&gt;-->
-<!--            &lt;!&ndash;                           autoplay="autoplay" controls muted loop="loop">&ndash;&gt;-->
-<!--            &lt;!&ndash;                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_showtime.mp4"&ndash;&gt;-->
-<!--            &lt;!&ndash;                                type="video/mp4"/>&ndash;&gt;-->
-<!--            &lt;!&ndash;                    </video>&ndash;&gt;-->
-<!--            &lt;!&ndash;                </td>&ndash;&gt;-->
-<!--            &lt;!&ndash;            </tr>&ndash;&gt;-->
-<!--            &lt;!&ndash;            <tr>&ndash;&gt;-->
-<!--            &lt;!&ndash;                <td>&ndash;&gt;-->
-<!--            &lt;!&ndash;                    The behaviors of EGPO-trained agents.&ndash;&gt;-->
-<!--            &lt;!&ndash;                </td>&ndash;&gt;-->
-<!--            &lt;!&ndash;            </tr>&ndash;&gt;-->
-<!--        </table>-->
-<!--    </div>-->
+    <!--    <div align="center">-->
+    <!--        <table width="90%" style="margin: -20pt -5pt; text-align: center;">-->
+    <!--            <tr>-->
+    <!--                <td>-->
+    <!--                    <video style="display:block; width:98%; height:auto; "-->
+    <!--                           autoplay="autoplay" controls muted loop="loop">-->
+    <!--                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_vs_ppo.mp4"-->
+    <!--                                type="video/mp4"/>-->
+    <!--                    </video>-->
+    <!--                    <div style="top: -10%;">The behaviors of agents trained via CoPO</div><br>-->
+    <!--                </td>-->
+    <!--            </tr>-->
+    <!--            &lt;!&ndash;        </table>&ndash;&gt;-->
+    <!--            &lt;!&ndash;        <br>&ndash;&gt;-->
+    <!--            &lt;!&ndash;        <br>&ndash;&gt;-->
+    <!--            &lt;!&ndash;        <table width="95%" style="margin: 0 0; text-align: center;">&ndash;&gt;-->
+    <!--            &lt;!&ndash;            <tr>&ndash;&gt;-->
+    <!--            &lt;!&ndash;                <td>&ndash;&gt;-->
+    <!--            &lt;!&ndash;                    <video style="display:block; width:98%; height:auto;"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                           autoplay="autoplay" controls muted loop="loop">&ndash;&gt;-->
+    <!--            &lt;!&ndash;                        <source src="https://raw.githubusercontent.com/decisionforce/archive/master/EGPO/egpo_showtime.mp4"&ndash;&gt;-->
+    <!--            &lt;!&ndash;                                type="video/mp4"/>&ndash;&gt;-->
+    <!--            &lt;!&ndash;                    </video>&ndash;&gt;-->
+    <!--            &lt;!&ndash;                </td>&ndash;&gt;-->
+    <!--            &lt;!&ndash;            </tr>&ndash;&gt;-->
+    <!--            &lt;!&ndash;            <tr>&ndash;&gt;-->
+    <!--            &lt;!&ndash;                <td>&ndash;&gt;-->
+    <!--            &lt;!&ndash;                    The behaviors of EGPO-trained agents.&ndash;&gt;-->
+    <!--            &lt;!&ndash;                </td>&ndash;&gt;-->
+    <!--            &lt;!&ndash;            </tr>&ndash;&gt;-->
+    <!--        </table>-->
+    <!--    </div>-->
 </div>
 
 <div class="section">
@@ -132,8 +137,10 @@
     <div class="title" id="lang">Experiment Result</div>
     <div class="body">
         <div class="text">
-            Supported by <a href="https://github.com/decisionforce/metadrive">MetaDrive Simulator</a>, we simulate the SDP in five typical traffic scenarios: roundabout, intersection, bottleneck, tollgate and parking-lot.
-            We show that proposed framework outperform other baselines in three aspects: success rate, efficiency and safety.
+            Supported by <a href="https://github.com/decisionforce/metadrive">MetaDrive Simulator</a>, we simulate the
+            SDP in five typical traffic scenarios: roundabout, intersection, bottleneck, tollgate and parking-lot.
+            We show that proposed framework outperform other baselines in three aspects: success rate, efficiency and
+            safety.
         </div>
         <div class="teaser"><img
                 src="images/main_result.png">
@@ -162,13 +169,12 @@
 
     <!--    If you find this work useful in your project, please consider to cite it through:-->
     <pre>
-<!--@inproceedings{peng2021safe,-->
-<!--  title={Learning to Simulate Self-driven Particles System with Coordinated Policy Optimization},-->
-<!--  author={Peng, Zhenghao and Li, Quanyi and Liu, Chunxiao and Zhou, Bolei},-->
-<!--  booktitle={The Conference on Robot Learning},-->
-<!--  year={2021}-->
-<!--}-->
-        Wait for arxiv
+    @article{peng2021learning,
+      title={Learning to Simulate Self-driven Particles System with Coordinated Policy Optimization},
+      author={Peng, Zhenghao and Li, Quanyi and Hui, Ka Ming and Liu, Chunxiao and Zhou, Bolei},
+      journal={Advances in Neural Information Processing Systems},
+      year={2021}
+    }
     </pre>
     <!-- Adjust the frame size based on the demo (Every project differs). -->
 </div>
