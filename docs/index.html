@@ -36,15 +36,14 @@
     </div>
     <!-- === Title Ends === -->
     <div class="author">
-        <p style="text-align:center">Neural Information Processing Systems (NeurIPS) 2021</p>
+        <p style="text-align:center">NeurIPS 2021</p>
         <a href="https://pengzhenghao.github.io" target="_blank">Zhenghao Peng</a><sup>1</sup>,&nbsp;&nbsp;
         <a href="https://quanyili.github.io">Quanyi Li</a><sup>3</sup>,&nbsp;
         <a href="#">Ka Ming Hui</a><sup>1</sup>,&nbsp;
         <a href="#">Chunxiao Liu</a><sup>2</sup>,&nbsp;
         <a href="https://boleizhou.github.io" target="_blank">Bolei Zhou</a><sup>1</sup>&nbsp;
     </div>
-
-    <div class="institution" style="font-size: 11pt;">
+    <div class="institution">
         <div>
             <sup>1</sup>The Chinese University of Hong Kong,
             <sup>2</sup>SenseTime Research <br>
@@ -109,13 +108,18 @@
             <br>
             <p>
                 We develop a novel MARL method <b>Coordinated Policy Optimization (CoPO)</b> to facilitate the bi-level
-                coordination of agents to learn the controllers of the Self-driven Particles systems, especially the
+                coordination of agents to learn the controllers of the Self-driven Particles systems, especially
                 traffic flows.
-                CoPO contains
+            </p>
+            <p>
+                CoPO consists of
                 the Local Coordination, a mechanism to coordinate agents' objectives in neighborhood by use local
                 coordination factor (LCF) to weight the individual reward and the neighborhood reward,
                 and
                 the Global Coordination, which uses meta-gradient to update LCF.
+            </p>
+            <p>
+                CoPO can learn realistic crowd actions as well as safe and socially compliant driving skills.
             </p>
         </div>
     </div>
@@ -140,11 +144,15 @@
             </tr>
         </table>
         <div class="text">
-            We develop 5 Multi-agent traffic simulation environments based on <a
-                href="http://github.com/decisionforce/metadrive">MetaDrive</a>.
-            Compared to baseline, the proposed CoPO method achieves superior performance in success rate (ratio of
-            vehicles achieve destinations),
-            efficiency (frequency of successes) and safety (total number of crashes) as shown in the below figure.
+            <p>
+                We develop 5 Multi-agent traffic simulation environments based on <a
+                    href="http://github.com/decisionforce/metadrive">MetaDrive</a>.
+            </p>
+            <p>
+                Compared to baselines, the proposed CoPO method achieves superior performance in success rate (ratio of
+                vehicles achieving destinations),
+                efficiency (frequency of successes) and safety (total number of crashes, the lower the better) as shown in the below figure.
+            </p>
         </div>
         <div class="teaser"><img
                 src="images/main_result.png">
