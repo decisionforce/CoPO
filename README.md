@@ -2,8 +2,8 @@
 
 [**Webpage**](https://decisionforce.github.io/CoPO) | 
 [**Code**](https://github.com/decisionforce/CoPO) | 
-**Video**| 
-**Paper**
+**Talk** (WIP) | 
+[**Paper**](https://arxiv.org/pdf/2110.13827.pdf)
 
 Hi there! This is the source code of the paper “Learning to Simulate Self-driven Particles System with Coordinated Policy Optimization”. 
 
@@ -86,9 +86,8 @@ python vis.py --env round --algo ippo
 python vis.py --env tollgate --algo cl --use_native_render
 ```
 
-We hope you enjoy the interesting behaviors learned by the agents in this work! 
-Please feel free to contact us if you have any questions or suggestions!
-Thanks!! 
+We hope you enjoy the interesting behaviors learned in this work! 
+Please feel free to contact us if you have any questions, thanks! 
 
 ## Citation
 
