@@ -92,5 +92,13 @@ Thanks!!
 
 ## Citation
 
-Working in Progress.
- 
+```latex
+@misc{peng2021learning,
+      title={Learning to Simulate Self-Driven Particles System with Coordinated Policy Optimization}, 
+      author={Zhenghao Peng and Quanyi Li and Ka Ming Hui and Chunxiao Liu and Bolei Zhou},
+      year={2021},
+      eprint={2110.13827},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
