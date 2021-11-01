@@ -32,14 +32,14 @@ pip install -e .
 As a quick start, you can start training CoPO in Intersection environment immediately after installation by running:
 
 ```
-cd code/copo/
+cd copo_code/copo/
 python inter/train_copo_dist.py --exp-name inter_copo_dist 
 ```
 
 The general way to run training is following:
 
 ```
-cd code/copo/
+cd copo_code/copo/
 python ENV/train_ALGO.py --exp-name EXPNAME 
 ```
 
