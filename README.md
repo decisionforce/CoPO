@@ -21,7 +21,7 @@ pip install metadrive-simulator==0.2.3
 pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
 
 # Install environment and algorithm.
-cd code
+cd copo_code
 pip install -e .
 ```
 
