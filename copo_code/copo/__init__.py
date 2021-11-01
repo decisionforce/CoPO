@@ -15,8 +15,7 @@ class SafeFallbackEncoder(json.JSONEncoder):
             if np.isnan(value):
                 return self.nan_str
 
-            if (type(value).__module__ == np.__name__
-                    and isinstance(value, np.ndarray)):
+            if (type(value).__module__ == np.__name__ and isinstance(value, np.ndarray)):
                 return value.tolist()
 
             if issubclass(type(value), numbers.Integral):

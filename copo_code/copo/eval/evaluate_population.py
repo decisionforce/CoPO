@@ -12,7 +12,7 @@ from metadrive.envs.marl_envs import MultiAgentIntersectionEnv, MultiAgentRounda
 
 
 def evaluate_once(
-        model_name, make_env, num_episodes=10, use_distributional_svo=False, suffix="", auto_add_svo_to_obs=True
+    model_name, make_env, num_episodes=10, use_distributional_svo=False, suffix="", auto_add_svo_to_obs=True
 ):
     # ===== Evaluate populations =====
     os.makedirs("evaluate_results", exist_ok=True)

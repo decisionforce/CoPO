@@ -22,7 +22,7 @@ class SVOObsForRound(LidarStateObservationMARound):
         space = Box(
             low=np.array([space.low[0]] * length),
             high=np.array([space.high[0]] * length),
-            shape=(length,),
+            shape=(length, ),
             dtype=space.dtype
         )
         return space
@@ -38,7 +38,7 @@ class SVOObsForRoundForTollgate(TollGateObservation):
         space = Box(
             low=np.array([space.low[0]] * length),
             high=np.array([space.high[0]] * length),
-            shape=(length,),
+            shape=(length, ),
             dtype=space.dtype
         )
         return space
@@ -60,7 +60,6 @@ class SVOEnv:
                 svo_dist="uniform",  # "uniform" or "normal"
                 svo_normal_std=0.3,  # The initial STD of normal distribution, might change by calling functions.
                 return_native_reward=False,
-
                 include_ego_reward=False,
 
                 # Whether to force set the svo

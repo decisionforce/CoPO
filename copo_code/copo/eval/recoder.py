@@ -10,7 +10,7 @@ from ray.rllib.utils import deep_update
 
 
 def norm(a, b):
-    return math.sqrt(a ** 2 + b ** 2)
+    return math.sqrt(a**2 + b**2)
 
 
 class DistanceMap:
@@ -129,8 +129,8 @@ class RecorderEnv(Wrapper):
                 self.user_data["episode_length"][self.episode_step][kkk] = info["episode_length"]
                 self.user_data["episode_reward"][self.episode_step][kkk] = info["episode_reward"]
                 self.user_data["energy"][self.episode_step][kkk] = info["step_energy"]
-                self.user_data["raw_action0_l2"][self.episode_step][kkk] = (info["raw_action"][0]) ** 2
-                self.user_data["raw_action1_l2"][self.episode_step][kkk] = (info["raw_action"][1]) ** 2
+                self.user_data["raw_action0_l2"][self.episode_step][kkk] = (info["raw_action"][0])**2
+                self.user_data["raw_action1_l2"][self.episode_step][kkk] = (info["raw_action"][1])**2
 
         # Count
         self.episode_step += 1
@@ -396,7 +396,7 @@ if __name__ == '__main__':
     for s in range(1, 100000000):
         # action_to_send = env.action_space.sample()
         # action_to_send = {v: [-1, 1] for v in env.unwrapped.vehicles}
-        action_to_send = {v: np.random.uniform(-1, 1, size=(2,)) for v in env.unwrapped.vehicles}
+        action_to_send = {v: np.random.uniform(-1, 1, size=(2, )) for v in env.unwrapped.vehicles}
         o, r, d, info = env.step(action_to_send)
         # env.render(mode="top_down")
         step_stat = env.get_step_result()

@@ -52,7 +52,7 @@ meta_svo_lookup_table = {
 
 
 def _compute_actions_for_tf_policy(
-        weights, obs, deterministic=False, policy_name="default_policy", layer_name_suffix=""
+    weights, obs, deterministic=False, policy_name="default_policy", layer_name_suffix=""
 ):
     obs = np.asarray(obs)
     assert obs.ndim == 2
@@ -123,8 +123,11 @@ def get_policy_function(model_name: str, checkpoint_dir_name="checkpoints"):
 
 class PolicyFunction:
     def __init__(
-            self, model_name, use_distributional_svo=True, auto_add_svo_to_obs=True,
-            checkpoint_dir_name="best_checkpoints"
+        self,
+        model_name,
+        use_distributional_svo=True,
+        auto_add_svo_to_obs=True,
+        checkpoint_dir_name="best_checkpoints"
     ):
         self.policy = get_policy_function(model_name, checkpoint_dir_name)
 
@@ -174,7 +177,7 @@ class PolicyFunction:
 if __name__ == '__main__':
     for env, shape in {"round": 91, "inter": 91, "parking": 91, "bottle": 96, "tollgate": 156}.items():
         for algo in [
-            "copo",
+                "copo",
         ]:
             checkpoint_name = "{}_{}_0".format(algo, env)
             print("Start running: ", checkpoint_name)
@@ -186,8 +189,8 @@ if __name__ == '__main__':
                     {"agent{}".format(i): np.zeros(shape=[
                         shape,
                     ])
-                        for i in range(10)}, {"agent{}".format(i): False
-                                              for i in range(10)}
+                     for i in range(10)}, {"agent{}".format(i): False
+                                           for i in range(10)}
                 )
             # print(r.shape)
             print(r.keys())

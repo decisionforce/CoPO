@@ -71,12 +71,14 @@ if __name__ == "__main__":
             policy_function.reset()
             break
         if args.use_native_render:
-            env.render(text={
-                "total agents": ep_agent,
-                "existing agents": len(o),
-                "success rate": ep_success / ep_agent if ep_agent > 0 else None,
-                "ep step": ep_step
-            })
+            env.render(
+                text={
+                    "total agents": ep_agent,
+                    "existing agents": len(o),
+                    "success rate": ep_success / ep_agent if ep_agent > 0 else None,
+                    "ep step": ep_step
+                }
+            )
         else:
             env.render(mode="top_down", num_stack=25)
     env.close()
