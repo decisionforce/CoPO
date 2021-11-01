@@ -25,13 +25,11 @@ if __name__ == "__main__":
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
         env=get_rllib_compatible_env(MultiAgentRoundaboutEnv),
-        # env_config=dict(start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]), ),
+        env_config=dict(start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]), ),
 
         # ===== Resource =====
         # So we need 2 CPUs per trial, 0.25 GPU per trial!
         num_gpus=0.25 if args.num_gpus != 0 else 0,
-
-        num_workers=1,
     )
 
     # Launch training
@@ -47,5 +45,5 @@ if __name__ == "__main__":
         custom_callback=MultiAgentDrivingCallbacks,
 
         # fail_fast='raise',
-        local_mode=True
+        # local_mode=True
     )
