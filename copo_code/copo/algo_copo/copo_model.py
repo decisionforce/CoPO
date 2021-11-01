@@ -88,10 +88,9 @@ def register_copo_model():
 
 class CoPOModel(TFModelV2):
     """Generic fully connected network implemented in ModelV2 API."""
-
     def __init__(
-            self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
-            model_config: ModelConfigDict, name: str
+        self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
+        model_config: ModelConfigDict, name: str
     ):
         super(CoPOModel, self).__init__(obs_space, action_space, num_outputs, model_config, name)
 
@@ -109,10 +108,10 @@ class CoPOModel(TFModelV2):
             raise ValueError()
 
         # We are using obs_flat, so take the flattened shape as input.
-        inputs = tf.keras.layers.Input(shape=(int(np.product(obs_space.shape)),), name="observations")
+        inputs = tf.keras.layers.Input(shape=(int(np.product(obs_space.shape)), ), name="observations")
         if use_centralized_critic:
             cc_inputs = tf.keras.layers.Input(
-                shape=(model_config["centralized_critic_obs_dim"],), name="cc_observations"
+                shape=(model_config["centralized_critic_obs_dim"], ), name="cc_observations"
             )
 
         # ===== Build Policy Network =====

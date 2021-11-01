@@ -9,28 +9,28 @@ from ray.tune import CLIReporter
 
 
 def train(
-        trainer,
-        config,
-        stop,
-        exp_name,
-        num_seeds=1,
-        num_gpus=0,
-        test_mode=False,
-        suffix="",
-        checkpoint_freq=10,
-        keep_checkpoints_num=None,
-        start_seed=0,
-        local_mode=False,
-        save_pkl=True,
-        custom_callback=None,
-        max_failures=5,
-        # wandb support is removed!
-        wandb_key_file=None,
-        wandb_project=None,
-        wandb_team="copo",
-        wandb_log_config=True,
-        init_kws=None,
-        **kwargs
+    trainer,
+    config,
+    stop,
+    exp_name,
+    num_seeds=1,
+    num_gpus=0,
+    test_mode=False,
+    suffix="",
+    checkpoint_freq=10,
+    keep_checkpoints_num=None,
+    start_seed=0,
+    local_mode=False,
+    save_pkl=True,
+    custom_callback=None,
+    max_failures=5,
+    # wandb support is removed!
+    wandb_key_file=None,
+    wandb_project=None,
+    wandb_team="copo",
+    wandb_log_config=True,
+    init_kws=None,
+    **kwargs
 ):
     init_kws = init_kws or dict()
     # initialize ray

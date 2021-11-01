@@ -69,10 +69,9 @@ MAPPO_CONFIG = merge_with_ippo_config(
 
 class TorchCentralizedCriticModel(TorchModelV2, nn.Module):
     """Multi-agent model that implements a centralized VF."""
-
     def __init__(
-            self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
-            model_config: ModelConfigDict, name: str
+        self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
+        model_config: ModelConfigDict, name: str
     ):
         TorchModelV2.__init__(self, obs_space, action_space, num_outputs, model_config, name)
         nn.Module.__init__(self)
@@ -190,7 +189,7 @@ class TorchCentralizedCriticModel(TorchModelV2, nn.Module):
 
     @override(TorchModelV2)
     def value_function(self) -> TensorType:
-        return torch.zeros((1,))
+        return torch.zeros((1, ))
 
     def central_value_function(self, obs):
         assert self._value_branch is not None
@@ -199,7 +198,6 @@ class TorchCentralizedCriticModel(TorchModelV2, nn.Module):
 
 class CentralizedValueMixin:
     """Add method to evaluate the central value function from the model."""
-
     def __init__(self):
         if self.config["framework"] != "torch":
             raise NotImplementedError("Error")
@@ -357,7 +355,7 @@ def central_vf_stats(policy, train_batch):
 
 
 def get_centralized_critic_obs_dim(
-        observation_space_shape, action_space_shape, counterfactual, num_neighbours, fuse_mode
+    observation_space_shape, action_space_shape, counterfactual, num_neighbours, fuse_mode
 ):
     """Get the centralized critic"""
     if fuse_mode == "concat":

@@ -119,10 +119,10 @@ def postprocess_add_advantages(policy: Policy, sample_batch: SampleBatch) -> Sam
 
 
 def post_process_fn(
-        policy: Policy,
-        sample_batch: SampleBatch,
-        other_agent_batches: Optional[Dict[AgentID, SampleBatch]] = None,
-        episode: Optional[MultiAgentEpisode] = None
+    policy: Policy,
+    sample_batch: SampleBatch,
+    other_agent_batches: Optional[Dict[AgentID, SampleBatch]] = None,
+    episode: Optional[MultiAgentEpisode] = None
 ) -> SampleBatch:
     # Put the actions to batch
     infos = sample_batch.get(SampleBatch.INFOS)
@@ -197,7 +197,7 @@ def post_process_fn(
 
 
 def ppo_lag_surrogate_loss(
-        policy: Policy, model: ModelV2, dist_class: Type[TFActionDistribution], train_batch: SampleBatch
+    policy: Policy, model: ModelV2, dist_class: Type[TFActionDistribution], train_batch: SampleBatch
 ) -> Union[TensorType, List[TensorType]]:
     """Constructs the loss for Proximal Policy Objective.
 
@@ -345,9 +345,9 @@ def ppo_lag_surrogate_loss(
         global_mean_vf_loss = reduce_mean_valid(global_vf_loss)
 
         total_loss = (
-                -surrogate_loss + policy.kl_coeff * action_kl + policy.config["vf_loss_coeff"] * nei_vf_loss +
-                policy.config["vf_loss_coeff"] * global_vf_loss + policy.config["vf_loss_coeff"] * vf_loss -
-                policy.entropy_coeff * curr_entropy
+            -surrogate_loss + policy.kl_coeff * action_kl + policy.config["vf_loss_coeff"] * nei_vf_loss +
+            policy.config["vf_loss_coeff"] * global_vf_loss + policy.config["vf_loss_coeff"] * vf_loss -
+            policy.entropy_coeff * curr_entropy
         )
 
         # with tf.control_dependencies([tf.print(
@@ -541,7 +541,7 @@ class StandardizeFields:
             else:
                 used_svo = current_svo
             batch["normalized_advantages"] = (
-                    np.cos(used_svo) * batch[Postprocessing.ADVANTAGES] + np.sin(used_svo) * batch[NEI_ADVANTAGE]
+                np.cos(used_svo) * batch[Postprocessing.ADVANTAGES] + np.sin(used_svo) * batch[NEI_ADVANTAGE]
             )
 
             # Just put the values in policy

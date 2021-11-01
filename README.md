@@ -21,7 +21,7 @@ pip install metadrive-simulator==0.2.3
 pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
 
 # Install environment and algorithm.
-cd code
+cd copo_code
 pip install -e .
 ```
 
@@ -65,6 +65,8 @@ copo_dist_cc  # Coordinated Policy Optimiztion with Centralized Critics
 
 finally the `EXPNAME` is arbitrary name to denote the experiment (with multiple concurrent trials), such as `roundabout_copo`.
 
+If you want to verify the code in details, e.g. through setting breakpoints, you can visit [this document](docs/how_to_run_in_local_mode.md) 
+to learn how to run CoPO in the local mode. 
 
 ## Visualization
 
