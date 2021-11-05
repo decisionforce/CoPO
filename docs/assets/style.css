@@ -42,15 +42,16 @@ pre {
 }
 .section .header .logo {
   width: 80pt;
-  margin-left: 10pt;
-  float: left;
+  /*margin-left: 10pt;*/
+  /*float: left;*/
+  text-align: center;
 }
 .section .header .logo img {
   width: 80pt;
   object-fit: cover;
 }
 .section .header .title {
-  margin: 0 120pt;
+  margin: 0 0;
   text-align: center;
   font-size: 22pt;
 }
