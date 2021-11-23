@@ -91,12 +91,11 @@ Please feel free to contact us if you have any questions, thanks!
 ## Citation
 
 ```latex
-@misc{peng2021learning,
-      title={Learning to Simulate Self-Driven Particles System with Coordinated Policy Optimization}, 
-      author={Zhenghao Peng and Quanyi Li and Ka Ming Hui and Chunxiao Liu and Bolei Zhou},
-      year={2021},
-      eprint={2110.13827},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@article{peng2021learning,
+  title={Learning to Simulate Self-Driven Particles System with Coordinated Policy Optimization},
+  author={Peng, Zhenghao and Hui, Ka Ming and Liu, Chunxiao and Zhou, Bolei and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={34},
+  year={2021}
 }
 ```
