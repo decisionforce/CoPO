@@ -23,13 +23,12 @@ pip install -e .
 
 # Install dependency
 pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
-
-# Install environment and algorithm.
 cd copo_code
 pip install -e .
 ```
 
 Please install latest [MetaDrive](https://github.com/decisionforce/metadrive).
+Note that we do not support `gym>=0.20.0`. In `setup.py` we specify we are using `gym==0.19.0`.
 
 
 ## Training
