@@ -16,15 +16,19 @@ Please following the tutorial below to kickoff the reproduction of our results.
 conda create -n copo python=3.7
 conda activate copo
 
-# Install dependency
-pip install metadrive-simulator==0.2.3
-pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
+# Install latest MetaDrive
+git clone https://github.com/decisionforce/metadrive
+cd metadrive
+pip install -e .
 
-# Install environment and algorithm.
+# Install dependency
+pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
 cd copo_code
 pip install -e .
 ```
 
+Please install latest [MetaDrive](https://github.com/decisionforce/metadrive).
+Note that we do not support `gym>=0.20.0`. In `setup.py` we specify we are using `gym==0.19.0`.
 
 
 ## Training
@@ -88,6 +92,9 @@ python vis.py --env tollgate --algo cl --use_native_render
 We hope you enjoy the interesting behaviors learned in this work! 
 Please feel free to contact us if you have any questions, thanks! 
 
+You can also try [vis_from_checkpoint.py](copo_code/copo/vis_from_checkpoint.py) that
+can directly load model from RLLib checkpoint.
+
 ## Citation
 
 ```latex
@@ -99,3 +106,4 @@ Please feel free to contact us if you have any questions, thanks!
   year={2021}
 }
 ```
+
