@@ -1,5 +1,9 @@
-import argparse
-
+"""
+We provide a script to demonstrate how to directly
+visualize population behavior from RLLib checkpoint.
+Please change the `ckpt_path` in the following to your
+own checkpoint path.
+"""
 from copo.eval.get_policy_function import PolicyFunction, _compute_actions_for_torch_policy, \
     _compute_actions_for_tf_policy
 from metadrive.envs.marl_envs import MultiAgentBottleneckEnv, MultiAgentRoundaboutEnv, MultiAgentIntersectionEnv, \
@@ -23,11 +27,13 @@ def get_env(env_name, use_native_render=False):
 
 
 if __name__ == "__main__":
+    # ===== Specify the details =====
     ckpt_path = "path_my_my_ckpt/checkpoint_1234/checkpoint-1234"
     env_name = "inter"
     using_torch_policy = False
     policy_name = "default"
     use_native_render = True  # Set to False to use Pygame Renderer
+    deterministic = False
 
     # ===== Load trained policy =====
     # import pickle
@@ -56,6 +62,7 @@ if __name__ == "__main__":
     else:
         weights = {k: v for k, v in weights.items() if "value" not in k}
 
+
     def policy(obs):
         ret, details = policy_class(
             weights, obs, policy_name=policy_name, layer_name_suffix="",
@@ -63,6 +70,7 @@ if __name__ == "__main__":
         )
         print("Action details: ", details)
         return ret
+
 
     policy_function = PolicyFunction(policy)
 

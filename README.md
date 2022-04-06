@@ -93,6 +93,8 @@ python vis.py --env tollgate --algo cl --use_native_render
 We hope you enjoy the interesting behaviors learned in this work! 
 Please feel free to contact us if you have any questions, thanks! 
 
+You can also try [vis_from_checkpoint.py](copo_code/copo/vis_from_checkpoint.py) that
+can directly load model from RLLib checkpoint.
 
 ## Citation
 
