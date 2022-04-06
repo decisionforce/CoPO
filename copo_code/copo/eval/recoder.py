@@ -209,20 +209,6 @@ class RecorderEnv(Wrapper):
         ret["energy_step_mean_episode_mean"] = np.mean(step_means)
         ret["energy_step_mean_episode_max"] = np.max(step_means)
 
-        # Group 1.3: collectiveness
-        step_means = []
-        for step, active_agents in self.step_active_agents.items():
-            agent_step_data = []
-            for kkk in active_agents:
-                agent_step_value = self.user_data["coll"][step].get(kkk, None)
-                if agent_step_value is not None:
-                    agent_step_data.append(agent_step_value)
-            if len(agent_step_data) > 0:
-                step_means.append(np.mean(agent_step_data))
-        ret["coll_step_mean_episode_min"] = np.min(step_means)
-        ret["coll_step_mean_episode_mean"] = np.mean(step_means)
-        ret["coll_step_mean_episode_max"] = np.max(step_means)
-
         # Group 1.4: Num neighbours
         step_means = []
         for step, active_agents in self.step_active_agents.items():
