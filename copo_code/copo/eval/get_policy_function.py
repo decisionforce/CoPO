@@ -124,15 +124,20 @@ def get_policy_function(model_name: str, checkpoint_dir_name="checkpoints"):
 class PolicyFunction:
     def __init__(
         self,
-        model_name,
+        policy=None,
+        model_name=None,
         use_distributional_svo=True,
         auto_add_svo_to_obs=True,
         checkpoint_dir_name="best_checkpoints"
     ):
-        self.policy = get_policy_function(model_name, checkpoint_dir_name)
-
-        self.model_name = model_name
-        self.use_svo = model_name.startswith("copo")
+        if policy is not None:
+            self.policy = policy
+            self.model_name = None
+            self.use_svo = False
+        else:
+            self.policy = get_policy_function(model_name, checkpoint_dir_name)
+            self.model_name = model_name
+            self.use_svo = model_name.startswith("copo")
         self.existing_svo = dict()
         self.use_distributional_svo = use_distributional_svo
         self.auto_add_svo_to_obs = auto_add_svo_to_obs

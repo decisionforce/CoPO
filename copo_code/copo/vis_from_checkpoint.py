@@ -3,6 +3,9 @@ We provide a script to demonstrate how to directly
 visualize population behavior from RLLib checkpoint.
 Please change the `ckpt_path` in the following to your
 own checkpoint path.
+
+Note that if you are restoring CoPO checkpoint, you need to implement appropriate
+wrapper to encode the LCF into the observation and feed them to the neural network.
 """
 from copo.eval.get_policy_function import PolicyFunction, _compute_actions_for_torch_policy, \
     _compute_actions_for_tf_policy
@@ -64,15 +67,13 @@ if __name__ == "__main__":
 
 
     def policy(obs):
-        ret, details = policy_class(
+        ret = policy_class(
             weights, obs, policy_name=policy_name, layer_name_suffix="",
             deterministic=deterministic
         )
-        print("Action details: ", details)
         return ret
 
-
-    policy_function = PolicyFunction(policy)
+    policy_function = PolicyFunction(policy=policy)
 
     # ===== Create environment =====
     env = get_env(env_name, use_native_render=use_native_render)
