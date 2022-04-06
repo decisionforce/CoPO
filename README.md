@@ -16,8 +16,12 @@ Please following the tutorial below to kickoff the reproduction of our results.
 conda create -n copo python=3.7
 conda activate copo
 
+# Install latest MetaDrive
+git clone https://github.com/decisionforce/metadrive
+cd metadrive
+pip install -e .
+
 # Install dependency
-pip install metadrive-simulator==0.2.3
 pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
 
 # Install environment and algorithm.
@@ -25,6 +29,7 @@ cd copo_code
 pip install -e .
 ```
 
+Please install latest [MetaDrive](https://github.com/decisionforce/metadrive).
 
 
 ## Training
@@ -88,6 +93,7 @@ python vis.py --env tollgate --algo cl --use_native_render
 We hope you enjoy the interesting behaviors learned in this work! 
 Please feel free to contact us if you have any questions, thanks! 
 
+
 ## Citation
 
 ```latex
@@ -99,3 +105,4 @@ Please feel free to contact us if you have any questions, thanks!
   year={2021}
 }
 ```
+
