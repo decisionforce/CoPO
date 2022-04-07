@@ -100,7 +100,7 @@ can directly load model from RLLib checkpoint.
 ```latex
 @article{peng2021learning,
   title={Learning to Simulate Self-Driven Particles System with Coordinated Policy Optimization},
-  author={Peng, Zhenghao and Hui, Ka Ming and Liu, Chunxiao and Zhou, Bolei and others},
+  author={Peng, Zhenghao and Hui, Ka Ming and Liu, Chunxiao and Zhou, Bolei},
   journal={Advances in Neural Information Processing Systems},
   volume={34},
   year={2021}
