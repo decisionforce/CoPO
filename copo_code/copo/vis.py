@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # ===== Load trained policy =====
     assert args.algo in ["cl", "copo", "ippo", "ccppo"]
     model_name = "{}_{}".format(args.algo, args.env)
-    policy_function = PolicyFunction(model_name)
+    policy_function = PolicyFunction(model_name=model_name)
 
     # ===== Create environment =====
     env = get_env(args.env, use_native_render=args.use_native_render)
