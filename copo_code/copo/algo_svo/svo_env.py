@@ -5,14 +5,15 @@ from collections import defaultdict
 from math import cos, sin
 
 import numpy as np
-from copo.utils import get_rllib_compatible_env
 from gym.spaces import Box
-from metadrive.envs.marl_envs.marl_inout_roundabout import LidarStateObservationMARound
 from metadrive.envs.marl_envs.marl_tollgate import TollGateObservation, MultiAgentTollgateEnv
+from metadrive.obs.state_obs import LidarStateObservation
 from metadrive.utils import get_np_random, norm, clip
 
+from drivingforce.copo.utils import get_rllib_compatible_env
 
-class SVOObsForRound(LidarStateObservationMARound):
+
+class SVOObsForRound(LidarStateObservation):
     @property
     def observation_space(self):
         space = super(SVOObsForRound, self).observation_space
@@ -22,7 +23,23 @@ class SVOObsForRound(LidarStateObservationMARound):
         space = Box(
             low=np.array([space.low[0]] * length),
             high=np.array([space.high[0]] * length),
-            shape=(length, ),
+            shape=(length,),
+            dtype=space.dtype
+        )
+        return space
+
+
+class SVOObsForRoundForTollgate(TollGateObservation):
+    @property
+    def observation_space(self):
+        space = super(SVOObsForRoundForTollgate, self).observation_space
+        assert isinstance(space, Box)
+        assert len(space.shape) == 1
+        length = space.shape[0] + 1
+        space = Box(
+            low=np.array([space.low[0]] * length),
+            high=np.array([space.high[0]] * length),
+            shape=(length,),
             dtype=space.dtype
         )
         return space
