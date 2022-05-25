@@ -34,7 +34,7 @@ class MultiAgentDrivingCallbacks(DefaultCallbacks):
             k = agent_id
             info = episode.last_info_for(k)
             if info:
-                if "velocity" not in info:
+                if "step_reward" not in info:
                     continue
                 episode.user_data["velocity"][k].append(info["velocity"])
                 episode.user_data["steering"][k].append(info["steering"])
