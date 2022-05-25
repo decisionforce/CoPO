@@ -10,7 +10,7 @@ from metadrive.envs.marl_envs.marl_tollgate import TollGateObservation, MultiAge
 from metadrive.obs.state_obs import LidarStateObservation
 from metadrive.utils import get_np_random, norm, clip
 
-from drivingforce.copo.utils import get_rllib_compatible_env
+from copo.utils import get_rllib_compatible_env
 
 
 class SVOObsForRound(LidarStateObservation):
