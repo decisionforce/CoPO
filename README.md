@@ -1,5 +1,10 @@
 # Code for Coordinated Policy Optimization
 
+```diff
+Changelog:
++ June 22, 2022: Update README to include many FAQ
+```
+
 [**Webpage**](https://decisionforce.github.io/CoPO) | [**Code**](https://github.com/decisionforce/CoPO) |  [**Paper**](https://arxiv.org/pdf/2110.13827.pdf) | [**Talk (English)**](https://youtu.be/sOw43l8lwxE) | [**Talk (Chinese)**](https://www.bilibili.com/video/BV1gr4y1C7Ab)
 
 Hi there! This is the source code of the paper “Learning to Simulate Self-driven Particles System with Coordinated Policy Optimization”. 
@@ -40,6 +45,7 @@ cd copo_code/copo/
 python inter/train_copo_dist.py --exp-name inter_copo_dist 
 ```
 
+Please visit each training script to adjust the hyper-parameters. 
 The general way to run training is following:
 
 ```
@@ -67,17 +73,16 @@ copo_dist  # Coordinated Policy Optimiztion (Ours)
 copo_dist_cc  # Coordinated Policy Optimiztion with Centralized Critics
 ```
 
-finally the `EXPNAME` is arbitrary name to denote the experiment (with multiple concurrent trials), such as `roundabout_copo`.
+finally the `EXPNAME` is arbitrary name to denote the experiment. One experiment contains multiple concurrent trials with different random seeds or sweeps of hyper-parameter. By default the exp name is `TEST`.
 
-If you want to verify the code in details, e.g. through setting breakpoints, you can visit [this document](docs/how_to_run_in_local_mode.md) 
-to learn how to run CoPO in the local mode. 
+If you want to verify the code in details, e.g. through setting breakpoints, you can to learn how to run CoPO in the local mode in [FAQ section](#faq). 
 
 ## Visualization
 
 We provide the trained models for all algorithms in all environments. A simple command can bring you the visualization of the behaviors of the populations!
 
 ```
-cd copo
+cd copo_code/copo
 python vis.py 
 
 # In default, we provide you the CoPO population in Intersection environment. 
@@ -85,7 +90,8 @@ python vis.py
 python vis.py --env round --algo ippo
 
 # Or you can use the native renderer for 3D rendering:
-# (Press H to show helper message)
+#  Press H to show helper message
+#  Press Q to switch to third-person view
 python vis.py --env tollgate --algo cl --use_native_render
 ```
 
@@ -94,6 +100,76 @@ Please feel free to contact us if you have any questions, thanks!
 
 You can also try [vis_from_checkpoint.py](copo_code/copo/vis_from_checkpoint.py) that
 can directly load model from RLLib checkpoint.
+
+
+## FAQ
+
+
+### How to run CoPO in the local mode?
+
+If you want to dive into the code and try to understand what is happening, you can try to set local mode of Ray to True, 
+in which case all code will run in a single process so that you can easily set breakpoints to step the code.
+
+However, this will raise problem in native CoPO scripts, since MetaDrive has a strict 
+requirement of singleton. Each process can only host one MetaDrive instance, imposed by the simulation engine.
+
+To solve this issue, we need to make several light modifications to the training scripts:
+Here is the procedure to setup local mode:
+
+1. Set `config["num_workers] = 1`, indicating that you ask RLLib to only setup one process.
+2. Remove `config["evaluation_config]` if any. In CoPO we don't test agents in different environments apart from the training environments, so we don't need to do this step.
+3. Remove all `tune.grid_search([...])` code by setting each config with only one value.
+4. Set `train(..., local_mode=True)`.
+
+
+Here is the exemplar code for training IPPO in roundabout environment, provided natively in CoPO codebase:
+
+```python
+...
+config = dict(
+    env=get_rllib_compatible_env(MultiAgentRoundaboutEnv),
+    env_config=dict(start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]), ),
+    num_gpus=0.25 if args.num_gpus != 0 else 0,
+)
+train(
+    IPPOTrainer,
+    exp_name=exp_name,
+    keep_checkpoints_num=5,
+    stop=stop,
+    config=get_ippo_config(config),
+    num_gpus=args.num_gpus,
+    num_seeds=1,
+    test_mode=args.test,
+    custom_callback=MultiAgentDrivingCallbacks,
+    # local_mode=True
+)
+```
+
+After the aforementioned modifications, the code becomes:
+
+```python
+config = dict(
+    env=get_rllib_compatible_env(MultiAgentRoundaboutEnv),
+    env_config=dict(start_seed=5000),  # <<<=== Modifified!
+    num_gpus=0.25 if args.num_gpus != 0 else 0,
+    num_workers=1,  # <<<=== Modifified!
+)
+train(
+    IPPOTrainer,
+    exp_name=exp_name,
+    keep_checkpoints_num=5,
+    stop=stop,
+    config=get_ippo_config(config),
+    num_gpus=args.num_gpus,
+    num_seeds=1,
+    test_mode=args.test,
+    custom_callback=MultiAgentDrivingCallbacks,
+    local_mode=True  # <<<=== Modifified!
+)
+```
+
+Now you can run the training script with debugger! Please make sure to reset those changes if you want to deploy the script in production. Thanks!
+
 
 ## Citation
 
