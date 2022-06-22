@@ -2,7 +2,7 @@
 
 ```diff
 Changelog:
-+ June 22, 2022: Update README to include many FAQ
++ June 22, 2022: Update README to include FAQ, update evaluate population script
 ```
 
 [**Webpage**](https://decisionforce.github.io/CoPO) | [**Code**](https://github.com/decisionforce/CoPO) |  [**Paper**](https://arxiv.org/pdf/2110.13827.pdf) | [**Talk (English)**](https://youtu.be/sOw43l8lwxE) | [**Talk (Chinese)**](https://www.bilibili.com/video/BV1gr4y1C7Ab)
