@@ -1,11 +1,16 @@
 # Code for Coordinated Policy Optimization
 
+[**Webpage**](https://decisionforce.github.io/CoPO) | [**Code**](https://github.com/decisionforce/CoPO) |  [**Paper**](https://arxiv.org/pdf/2110.13827.pdf) | [**Talk (English)**](https://youtu.be/sOw43l8lwxE) | [**Talk (Chinese)**](https://www.bilibili.com/video/BV1gr4y1C7Ab)
+
+
+
 ```diff
 Changelog:
 + June 22, 2022: Update README to include FAQ, update evaluate population script
++ June 23, 2022: Update a demo script to draw population evaluation results (See FAQ section)
 ```
 
-[**Webpage**](https://decisionforce.github.io/CoPO) | [**Code**](https://github.com/decisionforce/CoPO) |  [**Paper**](https://arxiv.org/pdf/2110.13827.pdf) | [**Talk (English)**](https://youtu.be/sOw43l8lwxE) | [**Talk (Chinese)**](https://www.bilibili.com/video/BV1gr4y1C7Ab)
+
 
 Hi there! This is the source code of the paper “Learning to Simulate Self-driven Particles System with Coordinated Policy Optimization”. 
 
@@ -103,6 +108,14 @@ can directly load model from RLLib checkpoint.
 
 
 ## FAQ
+
+
+### How to draw beautiful radar-like figure on three metrics?
+
+Please take a look on [copo_code/copo/eval/DrawEvalResult.ipynb](copo_code/copo/eval/DrawEvalResult.ipynb) file, where
+I present a demo script to draw such figure. 
+
+**Note that I am benchmarking different algorithm with latest MetaDrive! I will update a formal evaluation scripts and upload all trained models and results once the benchmarking finishes. Stay tuned!**
 
 
 ### How to run CoPO in the local mode?
