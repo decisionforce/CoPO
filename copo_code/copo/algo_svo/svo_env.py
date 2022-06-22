@@ -45,29 +45,13 @@ class SVOObsForRoundForTollgate(TollGateObservation):
         return space
 
 
-class SVOObsForRoundForTollgate(TollGateObservation):
-    @property
-    def observation_space(self):
-        space = super(SVOObsForRoundForTollgate, self).observation_space
-        assert isinstance(space, Box)
-        assert len(space.shape) == 1
-        length = space.shape[0] + 1
-        space = Box(
-            low=np.array([space.low[0]] * length),
-            high=np.array([space.high[0]] * length),
-            shape=(length, ),
-            dtype=space.dtype
-        )
-        return space
-
-
 class SVOEnv:
     @classmethod
     def default_config(cls):
         config = super(SVOEnv, cls).default_config()
         config.update(
             dict(
-                neighbours_distance=20,
+                neighbours_distance=40,
 
                 # Two mode to compute utility for each vehicle:
                 # "linear": util = r_me * svo + r_other * (1 - svo), svo in [0, 1]

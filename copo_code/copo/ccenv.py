@@ -23,6 +23,7 @@ def get_ccenv(env_class):
                 neighbours, nei_distances = self._find_in_range(kkk, self.config["neighbours_distance"])
                 i[kkk]["neighbours"] = neighbours
                 i[kkk]["neighbours_distance"] = nei_distances
+                # i[kkk]["neighbours_distance"] = nei_distances
                 nei_rewards = [r[kkkkk] for kkkkk in neighbours]
                 if nei_rewards:
                     i[kkk]["nei_rewards"] = sum(nei_rewards) / len(nei_rewards)

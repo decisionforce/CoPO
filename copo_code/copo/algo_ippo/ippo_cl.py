@@ -21,7 +21,7 @@ class ChangeNCallback(MultiAgentDrivingCallbacks):
 
     def on_episode_end(self, worker, base_env, policies, episode, **kwargs):
         if self.target_num_agents is None:
-            self.target_num_agents = policies['default'].config["target_num_agents"]
+            self.target_num_agents = base_env.envs[0].default_config()["num_agents"]
         super(ChangeNCallback, self).on_episode_end(worker, base_env, policies, episode, **kwargs)
         if worker.global_vars is None:
             return
@@ -49,7 +49,7 @@ class ChangeNCallback(MultiAgentDrivingCallbacks):
 
 
 def validate_config(config):
-    config["target_num_agents"] = config["env_config"]["num_agents"]
+    # config["target_num_agents"] = config["env_config"]["num_agents"]
     config["env_config"]["num_agents"] = 1
     validate_config_add_multiagent(config, PPOTFPolicy, PPO_valid)
 
