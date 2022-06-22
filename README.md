@@ -109,6 +109,14 @@ can directly load model from RLLib checkpoint.
 ## FAQ
 
 
+### How to draw beautiful radar-like figure on three metrics?
+
+Please take a look on [copo_code/copo/eval/DrawEvalResult.ipynb](copo_code/copo/eval/DrawEvalResult.ipynb) file, where
+I present a demo script to draw such figure. 
+
+**Note that I am benchmarking different algorithm with latest MetaDrive! I will update a formal evaluation scripts and upload all trained models and results once the benchmarking finishes. Stay tuned!**
+
+
 ### How to run CoPO in the local mode?
 
 If you want to dive into the code and try to understand what is happening, you can try to set local mode of Ray to True, 
