@@ -82,7 +82,6 @@ def train(
     if "verbose" not in kwargs:
         kwargs["verbose"] = 1 if not test_mode else 2
 
-    # This functionality is not supported yet!
     metric_columns = CLIReporter.DEFAULT_COLUMNS.copy()
     progress_reporter = CLIReporter(metric_columns)
     progress_reporter.add_metric_column("success")
