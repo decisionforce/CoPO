@@ -1,3 +1,8 @@
+"""
+Zhenghao: This script is not intended to be used formally by other users since I just used it to evaluate my trained
+agent personally. I wish to formally prepare a script so that other researchers can evaluate their agents too!
+"""
+
 import argparse
 import os
 import time
