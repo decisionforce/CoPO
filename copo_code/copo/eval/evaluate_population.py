@@ -19,15 +19,15 @@ def evaluate_once(
     saved_results = []
 
     # Setup policy
-    try:
-        policy_function = PolicyFunction(
-            model_name,
-            use_distributional_svo=use_distributional_svo and model_name.startswith("metasvo"),
-            auto_add_svo_to_obs=auto_add_svo_to_obs
-        )
-    except FileNotFoundError:
-        print("We failed to load data with model name: ", model_name)
-        return None
+    # try:
+    policy_function = PolicyFunction(
+        model_name,
+        use_distributional_svo=use_distributional_svo and model_name.startswith("metasvo"),
+        auto_add_svo_to_obs=auto_add_svo_to_obs
+    )
+    # except FileNotFoundError:
+    #     print("We failed to load data with model name: ", model_name)
+    #     return None
 
     # Setup environment
     env = make_env()
@@ -150,18 +150,18 @@ if __name__ == '__main__':
 
     suffix = args.suffix
 
-    for i in range(num_checkpoints):
-        model_name = "{}_{}".format(name, i)
-        make_env = get_make_env(env, wrap_with_svo_env=args.use_svo_env)
-        ret = evaluate_once(
-            model_name,
-            make_env,
-            num_episodes,
-            use_distributional_svo=use_distributional_svo,
-            suffix=suffix,
-            auto_add_svo_to_obs=not args.no_auto_add_svo_to_obs
-        )
-        if ret is None:
-            print("We failed to eval model: ", model_name)
-        else:
-            print("\n\n\n Finish evaluating model: {}\n\n\n".format(model_name))
+    # for i in range(num_checkpoints):
+    model_name = "{}_{}".format(name, env)
+    make_env = get_make_env(env, wrap_with_svo_env=args.use_svo_env)
+    ret = evaluate_once(
+        model_name,
+        make_env,
+        num_episodes,
+        use_distributional_svo=use_distributional_svo,
+        suffix=suffix,
+        auto_add_svo_to_obs=not args.no_auto_add_svo_to_obs
+    )
+    if ret is None:
+        print("We failed to eval model: ", model_name)
+    else:
+        print("\n\n\n Finish evaluating model: {}\n\n\n".format(model_name))
