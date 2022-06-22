@@ -7,6 +7,7 @@
 ```diff
 Changelog:
 + June 22, 2022: Update README to include FAQ, update evaluate population script
++ June 23, 2022: Update a demo [script](copo_code/copo/eval/DrawEvalResult.ipynb) to draw population evaluation results
 ```
 
 
