@@ -120,7 +120,7 @@ class RecorderEnv(Wrapper):
         # Ordinary stats
         for kkk in r.keys():
             info = i[kkk]
-            if info:
+            if "step_reward" in info:  # Make sure this is not the first step of episode
                 self.user_data["velocity"][self.episode_step][kkk] = info["velocity"]
                 self.user_data["steering"][self.episode_step][kkk] = info["steering"]
                 self.user_data["step_reward"][self.episode_step][kkk] = info["step_reward"]
