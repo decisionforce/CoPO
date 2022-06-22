@@ -30,7 +30,7 @@ if __name__ == "__main__":
             get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentMetaDrive), return_env_class=True)),
         ]),
         env_config=dict(
-            # start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
+            start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
             neighbours_distance=40,
         ),
 

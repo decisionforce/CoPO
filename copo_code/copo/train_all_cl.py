@@ -23,12 +23,12 @@ if __name__ == "__main__":
             get_rllib_compatible_env(get_change_n_env(MultiAgentMetaDrive)),
         ]),
         env_config=dict(
-            # start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000])
+            start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000])
         ),
 
         # ===== Resource =====
         # num_workers=1,
-        num_gpus=0.25 if args.num_gpus != 0 else 0,
+        num_gpus=0.5 if args.num_gpus != 0 else 0,
     )
 
     # Launch training

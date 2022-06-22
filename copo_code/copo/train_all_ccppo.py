@@ -28,7 +28,7 @@ if __name__ == "__main__":
         ),
 
         # ===== Resource =====
-        num_gpus=0.25 if args.num_gpus != 0 else 0,
+        num_gpus=0.5 if args.num_gpus != 0 else 0,
 
         # ===== MAPPO =====
         counterfactual=tune.grid_search([True]),

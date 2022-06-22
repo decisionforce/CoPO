@@ -31,14 +31,14 @@ if __name__ == "__main__":
 
         # ===== Resource =====
         # So we need 2 CPUs per trial, 0.25 GPU per trial!
-        num_gpus=0.25 if args.num_gpus != 0 else 0,
+        num_gpus=0.5 if args.num_gpus != 0 else 0,
     )
 
     # Launch training
     train(
         IPPOTrainer,
         exp_name=exp_name,
-        keep_checkpoints_num=5,
+        keep_checkpoints_num=3,
         stop=stop,
         config=config,
         num_gpus=args.num_gpus,
