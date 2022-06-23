@@ -115,7 +115,7 @@ can directly load model from RLLib checkpoint.
 Please take a look on [copo_code/copo/eval/DrawEvalResult.ipynb](copo_code/copo/eval/DrawEvalResult.ipynb) file, where
 I present a demo script to draw such figure. 
 
-**Note that I am benchmarking different algorithm with latest MetaDrive! I will update a formal evaluation scripts and upload all trained models and results once the benchmarking finishes. Stay tuned!**
+**Note that I am benchmarking different algorithms with latest MetaDrive! I will upload a formal evaluation script and all trained models and results once benchmarking is finished. Stay tuned!**
 
 
 ### How to run CoPO in the local mode?
