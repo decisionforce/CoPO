@@ -9,7 +9,7 @@ from ray import tune
 if __name__ == "__main__":
     args = get_train_parser().parse_args()
     exp_name = args.exp_name or "TEST"
-    stop = int(100_0000)
+    stop = int(200_0000)
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
