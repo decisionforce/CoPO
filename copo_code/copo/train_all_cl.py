@@ -1,5 +1,4 @@
-from copo.algo_ippo.ippo_cl import IPPOCL, ChangeNCallback
-from copo.ccenv import get_change_n_env
+from copo.algo_ippo.ippo_cl import IPPOCL, get_change_n_env, get_change_n_callback
 from copo.train.train import train
 from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env
@@ -41,7 +40,7 @@ if __name__ == "__main__":
         num_gpus=args.num_gpus,
         num_seeds=1,
         test_mode=args.test,
-        custom_callback=ChangeNCallback,
+        custom_callback=get_change_n_callback(stop),
 
         # fail_fast='raise',
         # local_mode=True
