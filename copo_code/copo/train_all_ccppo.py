@@ -14,14 +14,16 @@ if __name__ == "__main__":
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
-        env=tune.grid_search([
-            get_ccppo_env(MultiAgentParkingLotEnv),
-            get_ccppo_env(MultiAgentRoundaboutEnv),
-            get_ccppo_env(MultiAgentBottleneckEnv),
-            get_ccppo_env(MultiAgentMetaDrive),
-            get_ccppo_env(MultiAgentTollgateEnv),
-            get_ccppo_env(MultiAgentIntersectionEnv)
-        ]),
+        env=tune.grid_search(
+            [
+                get_ccppo_env(MultiAgentParkingLotEnv),
+                get_ccppo_env(MultiAgentRoundaboutEnv),
+                get_ccppo_env(MultiAgentBottleneckEnv),
+                get_ccppo_env(MultiAgentMetaDrive),
+                get_ccppo_env(MultiAgentTollgateEnv),
+                get_ccppo_env(MultiAgentIntersectionEnv)
+            ]
+        ),
         env_config=dict(
             start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
             neighbours_distance=40,

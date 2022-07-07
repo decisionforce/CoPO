@@ -23,7 +23,7 @@ class SVOObsForRound(LidarStateObservation):
         space = Box(
             low=np.array([space.low[0]] * length),
             high=np.array([space.high[0]] * length),
-            shape=(length,),
+            shape=(length, ),
             dtype=space.dtype
         )
         return space
@@ -39,7 +39,7 @@ class SVOObsForRoundForTollgate(TollGateObservation):
         space = Box(
             low=np.array([space.low[0]] * length),
             high=np.array([space.high[0]] * length),
-            shape=(length,),
+            shape=(length, ),
             dtype=space.dtype
         )
         return space

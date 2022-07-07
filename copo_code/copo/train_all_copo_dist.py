@@ -21,14 +21,16 @@ if __name__ == "__main__":
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
-        env=tune.grid_search([
-            get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentParkingLotEnv), return_env_class=True)),
-            get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentRoundaboutEnv), return_env_class=True)),
-            get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentTollgateEnv), return_env_class=True)),
-            get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentBottleneckEnv), return_env_class=True)),
-            get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentIntersectionEnv), return_env_class=True)),
-            get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentMetaDrive), return_env_class=True)),
-        ]),
+        env=tune.grid_search(
+            [
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentParkingLotEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentRoundaboutEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentTollgateEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentBottleneckEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentIntersectionEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentMetaDrive), return_env_class=True)),
+            ]
+        ),
         env_config=dict(
             start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
             neighbours_distance=40,
