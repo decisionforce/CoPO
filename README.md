@@ -8,6 +8,7 @@
 Changelog:
 + June 22, 2022: Update README to include FAQ, update evaluate population script
 + June 23, 2022: Update a demo script to draw population evaluation results (See FAQ section)
++ July 7, 2022: Remove redundant files and use `train_all_*` scripts
 ```
 
 
@@ -47,7 +48,7 @@ As a quick start, you can start training CoPO in Intersection environment immedi
 
 ```
 cd copo_code/copo/
-python inter/train_copo_dist.py --exp-name inter_copo_dist 
+python train_all_copo_dist.py --exp-name copo 
 ```
 
 Please visit each training script to adjust the hyper-parameters. 
@@ -55,31 +56,22 @@ The general way to run training is following:
 
 ```
 cd copo_code/copo/
-python ENV/train_ALGO.py --exp-name EXPNAME 
+python train_all_ALGO.py --exp-name EXPNAME 
 ```
 
-Here `ENV` refers to the shorthand of environments:
-
-```
-round  # Roundabout
-inter  # Intersection
-bottle  # Bottleneck
-parking  # Parking Lot
-tollgate  # Tollgate
-```
-
-and `ALGO` is the shorthand for algorithms:
+Here `EXPNAME` is arbitrary name to represent the experiment. One experiment contains multiple concurrent trials with different random seeds or sweeps of hyper-parameter. By default the exp name is `TEST`.
+`ALGO` is the shorthand for algorithms:
 
 ```
 ippo  # Individual Policy Optimization
 ccppo  # Mean Field Policy Optimization
 cl  # Curriculum Learning
 copo_dist  # Coordinated Policy Optimiztion (Ours)
-copo_dist_cc  # Coordinated Policy Optimiztion with Centralized Critics
 ```
 
-finally the `EXPNAME` is arbitrary name to denote the experiment. One experiment contains multiple concurrent trials with different random seeds or sweeps of hyper-parameter. By default the exp name is `TEST`.
-
+You can also specify to use GPU via `python train_all_ALGO.py --exp-name EXPNAME --num-gpus 4`.
+By default, we will run 8 trails with different seeds for one environment and one algorithm.
+If this overwhelms your computing resource, please take a look on the training scripts and modify it by yourself.
 If you want to verify the code in details, e.g. through setting breakpoints, you can to learn how to run CoPO in the local mode in [FAQ section](#faq). 
 
 ## Visualization
@@ -115,7 +107,7 @@ can directly load model from RLLib checkpoint.
 Please take a look on [copo_code/copo/eval/DrawEvalResult.ipynb](copo_code/copo/eval/DrawEvalResult.ipynb) file, where
 I present a demo script to draw such figure. 
 
-**Note that I am benchmarking different algorithms with latest MetaDrive! I will upload a formal evaluation script and all trained models and results once benchmarking is finished. Stay tuned!**
+**Note that I am benchmarking different algorithm with latest MetaDrive! I will update a formal evaluation scripts and upload all trained models and results once the benchmarking finishes. Stay tuned!**
 
 
 ### How to run CoPO in the local mode?
@@ -182,6 +174,15 @@ train(
 ```
 
 Now you can run the training script with debugger! Please make sure to reset those changes if you want to deploy the script in production. Thanks!
+
+### Can I use GPU for training?
+
+Yes. Apart from specifying `python train_all_ALGO.py --num-gpus 4` to tell RLLib "I have 4 gpus in this computer!",
+you can also modify the `num_gpus` config WITHIN the config dict.
+The `num_gpus` within config dict specifies the number of GPU each trial will consume.
+By default, `config["num_gpus"]=0.5` means each trial will use 0.5 GPU. If your computer has 4 gpus and sufficient cpus, then RLLib will
+launch 8 concurrent trials. Note that those specifications does not mean true resource consumption.
+
 
 
 ## Citation

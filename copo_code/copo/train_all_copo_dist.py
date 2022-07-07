@@ -1,4 +1,4 @@
-from copo.algo_copo.constants import *
+from copo.algo_copo.constants import USE_DISTRIBUTIONAL_SVO, USE_CENTRALIZED_CRITIC
 from copo.algo_copo.copo import CoPO
 from copo.algo_svo.svo_env import get_svo_env
 from copo.callbacks import MultiAgentDrivingCallbacks
@@ -6,7 +6,8 @@ from copo.ccenv import get_ccenv
 from copo.train.train import train
 from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env
-from metadrive.envs.marl_envs import MultiAgentTollgateEnv
+from metadrive.envs.marl_envs import MultiAgentParkingLotEnv, MultiAgentRoundaboutEnv, MultiAgentBottleneckEnv, \
+    MultiAgentMetaDrive, MultiAgentTollgateEnv, MultiAgentIntersectionEnv
 from ray import tune
 
 if __name__ == "__main__":
@@ -15,16 +16,23 @@ if __name__ == "__main__":
 
     # Setup config
     # We set the stop criterion to 2M environmental steps! Since PPO in single OurEnvironment converges at around 20k steps.
-    stop = int(200_0000)
+    stop = int(100_0000)
 
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
-        env=get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentTollgateEnv), return_env_class=True)),
+        env=tune.grid_search(
+            [
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentParkingLotEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentRoundaboutEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentTollgateEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentBottleneckEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentIntersectionEnv), return_env_class=True)),
+                get_rllib_compatible_env(get_svo_env(get_ccenv(MultiAgentMetaDrive), return_env_class=True)),
+            ]
+        ),
         env_config=dict(
             start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
-            num_agents=40,
-            crash_done=True,
             neighbours_distance=40,
         ),
 

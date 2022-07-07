@@ -2,7 +2,8 @@ from copo.algo_ccppo.ccppo import CCTrainerForMAOurEnvironment, get_ccppo_env, r
 from copo.callbacks import MultiAgentDrivingCallbacks
 from copo.train.train import train
 from copo.train.utils import get_train_parser
-from metadrive.envs.marl_envs import MultiAgentParkingLotEnv
+from metadrive.envs.marl_envs import MultiAgentParkingLotEnv, MultiAgentRoundaboutEnv, MultiAgentBottleneckEnv, \
+    MultiAgentMetaDrive, MultiAgentTollgateEnv, MultiAgentIntersectionEnv
 from ray import tune
 
 if __name__ == "__main__":
@@ -13,11 +14,23 @@ if __name__ == "__main__":
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
-        env=get_ccppo_env(MultiAgentParkingLotEnv),
-        env_config=dict(start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]), ),
+        env=tune.grid_search(
+            [
+                get_ccppo_env(MultiAgentParkingLotEnv),
+                get_ccppo_env(MultiAgentRoundaboutEnv),
+                get_ccppo_env(MultiAgentBottleneckEnv),
+                get_ccppo_env(MultiAgentMetaDrive),
+                get_ccppo_env(MultiAgentTollgateEnv),
+                get_ccppo_env(MultiAgentIntersectionEnv)
+            ]
+        ),
+        env_config=dict(
+            start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
+            neighbours_distance=40,
+        ),
 
         # ===== Resource =====
-        num_gpus=0.25 if args.num_gpus != 0 else 0,
+        num_gpus=0.5 if args.num_gpus != 0 else 0,
 
         # ===== MAPPO =====
         counterfactual=tune.grid_search([True]),

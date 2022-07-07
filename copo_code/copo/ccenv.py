@@ -1,4 +1,3 @@
-import copy
 from collections import defaultdict
 
 from metadrive.utils import norm
@@ -23,6 +22,7 @@ def get_ccenv(env_class):
                 neighbours, nei_distances = self._find_in_range(kkk, self.config["neighbours_distance"])
                 i[kkk]["neighbours"] = neighbours
                 i[kkk]["neighbours_distance"] = nei_distances
+                # i[kkk]["neighbours_distance"] = nei_distances
                 nei_rewards = [r[kkkkk] for kkkkk in neighbours]
                 if nei_rewards:
                     i[kkk]["nei_rewards"] = sum(nei_rewards) / len(nei_rewards)
@@ -66,22 +66,3 @@ def get_ccenv(env_class):
     CCEnv.__name__ = name
     CCEnv.__qualname__ = name
     return CCEnv
-
-
-def get_change_n_env(env_class):
-    class ChangeNEnv(env_class):
-        def __init__(self, config):
-            self._raw_input_config = copy.deepcopy(config)
-            super(ChangeNEnv, self).__init__(config)
-
-        def close_and_reset_num_agents(self, num_agents):
-            config = copy.deepcopy(self._raw_input_config)
-            self.close()
-            config["num_agents"] = num_agents
-            super(ChangeNEnv, self).__init__(config)
-
-    name = env_class.__name__
-    name = "CL{}".format(name)
-    ChangeNEnv.__name__ = name
-    ChangeNEnv.__qualname__ = name
-    return ChangeNEnv

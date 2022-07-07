@@ -65,12 +65,8 @@ if __name__ == "__main__":
     else:
         weights = {k: v for k, v in weights.items() if "value" not in k}
 
-
     def policy(obs):
-        ret = policy_class(
-            weights, obs, policy_name=policy_name, layer_name_suffix="",
-            deterministic=deterministic
-        )
+        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix="", deterministic=deterministic)
         return ret
 
     policy_function = PolicyFunction(policy=policy)
@@ -103,7 +99,7 @@ if __name__ == "__main__":
             print(d, info)
             print(
                 "Success Rate: {:.3f}, reward: {:.3f}, success reward: {:.3f}, failed reward: {:.3f}, total num {}".
-                    format(
+                format(
                     ep_success / ep_done if ep_done > 0 else -1, ep_reward_sum / ep_done if ep_done > 0 else -1,
                     ep_success_reward_sum / ep_success if ep_success > 0 else -1,
                     (ep_reward_sum - ep_success_reward_sum) / (ep_done - ep_success) if

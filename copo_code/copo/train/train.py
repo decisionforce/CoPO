@@ -23,7 +23,7 @@ def train(
     local_mode=False,
     save_pkl=True,
     custom_callback=None,
-    max_failures=5,
+    max_failures=1,
     # wandb support is removed!
     wandb_key_file=None,
     wandb_project=None,
