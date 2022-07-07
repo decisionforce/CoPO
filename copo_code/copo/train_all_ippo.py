@@ -12,7 +12,7 @@ if __name__ == "__main__":
     exp_name = args.exp_name or "TEST"
 
     # Setup config
-    stop = int(500_0000)
+    stop = int(100_0000)
 
     config = dict(
         # ===== Environmental Setting =====
