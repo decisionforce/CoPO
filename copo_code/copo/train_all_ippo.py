@@ -1,5 +1,5 @@
 from copo.callbacks import MultiAgentDrivingCallbacks
-from copo.round.train_ippo import IPPOTrainer
+from copo.algo_ippo.ippo import IPPOTrainer
 from copo.train.train import train
 from copo.train.utils import get_train_parser
 from copo.utils import get_rllib_compatible_env

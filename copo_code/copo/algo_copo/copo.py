@@ -5,8 +5,7 @@ import ray
 from copo.algo_ccppo.ccppo import get_centralized_critic_obs_dim, mean_field_ccppo_process
 from copo.algo_copo.constants import *
 from copo.algo_copo.copo_model import register_copo_model, NeiValueNetworkMixin
-from copo.algo_ippo.ippo import DEFAULT_IPPO_CONFIG, merge_dicts
-from copo.round.train_ippo import IPPOTrainer, PPO_valid
+from copo.algo_ippo.ippo import DEFAULT_IPPO_CONFIG, merge_dicts, IPPOTrainer, PPO_valid
 from copo.utils import validate_config_add_multiagent
 from ray.rllib.agents.ppo.ppo import warn_about_bad_reward_scales, UpdateKL
 from ray.rllib.agents.ppo.ppo_tf_policy import KLCoeffMixin, EntropyCoeffSchedule, \
