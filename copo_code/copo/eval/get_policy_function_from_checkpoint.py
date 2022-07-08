@@ -30,7 +30,7 @@ def get_policy_function_from_checkpoint(ckpt, deterministic=False, policy_name="
         policy_class = _compute_actions_for_tf_policy
 
     def policy(obs):
-        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix="", deterministic=deterministic)
+        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix="_1", deterministic=deterministic)
         return ret
 
     policy_function = PolicyFunction(policy=policy)
@@ -39,6 +39,7 @@ def get_policy_function_from_checkpoint(ckpt, deterministic=False, policy_name="
 
 def get_lcf_from_checkpoint(trial_path):
     file = os.path.join(trial_path, "progress.csv")
+    assert os.path.isfile(file), "We expect to use progress.csv to extract LCF!"
     df = pd.read_csv(file)
 
     svo_mean = df.loc[df.index[-1], "info/learner/svo"]

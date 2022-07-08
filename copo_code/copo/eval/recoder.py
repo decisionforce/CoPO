@@ -349,7 +349,7 @@ class RecorderEnv(Wrapper):
         return ret
 
     def render(self, mode='human', **kwargs):
-        if mode == "top_down":
+        if mode in ["top_down", "topdown", "bev", "birdview"]:
             return super(RecorderEnv, self).render(mode, **kwargs)
         else:
             return self.unwrapped.render(text={k: "{:.3f}".format(v) for k, v in self.get_step_result().items()})

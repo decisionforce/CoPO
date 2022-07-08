@@ -3,9 +3,9 @@ Zhenghao: This script is not intended to be used formally by other users since I
 agent personally. I wish to formally prepare a script so that other researchers can evaluate their agents too!
 """
 
-import argparse
 import os
 import os.path as osp
+import re
 import time
 
 import numpy as np
@@ -17,7 +17,7 @@ from copo.ccenv import get_ccenv
 from copo.eval.get_policy_function_from_checkpoint import get_policy_function_from_checkpoint, get_lcf_from_checkpoint
 from copo.eval.recoder import RecorderEnv
 from metadrive.envs.marl_envs import MultiAgentIntersectionEnv, MultiAgentRoundaboutEnv, MultiAgentTollgateEnv, \
-    MultiAgentBottleneckEnv, MultiAgentParkingLotEnv
+    MultiAgentBottleneckEnv, MultiAgentParkingLotEnv, MultiAgentMetaDrive
 
 
 def get_env(env, should_wrap_copo_env, should_wrap_cc_env, svo_mean=0.0, svo_std=0.0):
@@ -36,43 +36,31 @@ def get_env(env, should_wrap_copo_env, should_wrap_cc_env, svo_mean=0.0, svo_std
     elif "Tollgate" in env:
         env_cls = MultiAgentTollgateEnv
         env_name = "Tollgate"
-    elif "XXXX" in env:
-        env_cls = XXX
+    elif "MultiAgentMetaDrive" in env:
+        env_cls = MultiAgentMetaDrive
         env_name = "PGMap"
     else:
         raise ValueError()
 
     if should_wrap_copo_env:
         assert should_wrap_cc_env is False
-        env_cls = get_svo_env(get_ccenv(MultiAgentParkingLotEnv), return_env_class=True)
+        env_cls = get_svo_env(get_ccenv(env_cls), return_env_class=True)
         env = env_cls({})
         env.set_svo_dist(mean=svo_mean, std=svo_std)
 
     elif should_wrap_cc_env:
         assert should_wrap_copo_env is False
-        env_cls = get_ccppo_env(MultiAgentParkingLotEnv)
+        env_cls = get_ccppo_env(env_cls)
         env = env_cls({})
 
     else:
         env = env_cls({})
 
-    return RecorderEnv(env)
+    return RecorderEnv(env), env_name
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    # parser.add_argument("--root", required=True, type=str, help="Path to experiment folder. Example: copo")
-    # parser.add_argument("--use_distributional_svo", action="store_true")
-    # parser.add_argument("--use_svo_env", action="store_true")
-    # parser.add_argument("--no_auto_add_svo_to_obs", action="store_true")
-    args = parser.parse_args()
-
-    num_episodes = 20
-
-    # TODO: what is this?
-    # use_distributional_svo = args.use_distributional_svo
-    # if use_distributional_svo:
-    #     raise ValueError("We find not using use_distributional_svo will be better!")
+    num_episodes = 1
 
     root = "eval/demo_raw_checkpoints/copo"
     root = os.path.abspath(root)
@@ -92,17 +80,22 @@ if __name__ == '__main__':
             if "checkpoint" in ckpt_path:
                 ckpt_paths.append((ckpt_path, int(ckpt_path.split("_")[1])))
 
-        # We only return largest 2 checkpoints
+        # All checkpoints will be evaluated
         ckpt_paths = sorted(ckpt_paths, key=lambda p: p[1])
-        ckpt_paths = ckpt_paths[-2:]
 
         for ckpt_path, ckpt_count in ckpt_paths:
             ckpt_file_path = osp.join(root, trial_path, ckpt_path, ckpt_path.replace("_", "-"))
+            start_seed = eval(re.search("start_seed=(.*?),", trial_name)[1])
+            print(
+                f"We will evaluate checkpoint: Algo{root.split('/')[-1]}, Env{raw_env_name}, Seed{start_seed}, "
+                f"Ckpt{ckpt_count}"
+            )
             checkpoint_infos.append({
                 "path": ckpt_file_path,
                 "count": ckpt_count,
                 "algo": root.split('/')[-1],
                 "env": raw_env_name,
+                "seed": start_seed,
                 "trial": trial_name,
                 "trial_path": trial_path,
                 "should_wrap_copo_env": should_wrap_copo_env,
@@ -114,21 +107,24 @@ if __name__ == '__main__':
 
     for ckpt_info in checkpoint_infos:
         assert os.path.isfile(ckpt_info["path"]), ckpt_info
-        print(ckpt_info)
-
         policy_function = get_policy_function_from_checkpoint(ckpt_info["path"])
-
         if ckpt_info["should_wrap_copo_env"]:
             lcf_mean, lcf_std = get_lcf_from_checkpoint(ckpt_info["trial_path"])
         else:
             lcf_mean = lcf_std = 0.0
 
         # Setup environment
-        env = get_env(
+        env, formal_env_name = get_env(
             env=ckpt_info["env"], should_wrap_copo_env=ckpt_info["should_wrap_copo_env"],
             should_wrap_cc_env=ckpt_info["should_wrap_cc_env"], svo_mean=lcf_mean, svo_std=lcf_std
         )
 
+        result_name = f"{ckpt_info['algo']}_{formal_env_name}_{ckpt_info['seed']}_{ckpt_info['count']}"
+        print(f"\n === Evaluating {result_name} ===")
+        if ckpt_info["should_wrap_copo_env"]:
+            print("We are using CoPO environment! The LCF is set to Mean {}, STD {}".format(lcf_mean, lcf_std))
+
+        # Evaluate this checkpoint for sufficient episodes.
         try:
             o = env.reset()
             d = {"__all__": False}
@@ -143,13 +139,15 @@ if __name__ == '__main__':
                 o, r, d, info = env.step(policy_function(o, d))
                 step_count += 1
 
+                # env.render(mode="topdown")
+
                 if step_count % 100 == 0:
                     print(
                         "Evaluating {} {} {}, Num episodes: {}, Num steps in this episode: {} (Ep time {:.2f}, "
                         "Total time {:.2f})".format(
                             ckpt_info["algo"],
-                            ckpt_info["env"],
-                            ckpt_info["trial"],
+                            formal_env_name,
+                            ckpt_info["seed"],
                             ep_count, step_count, np.mean(ep_times),
                             time.time() - start
                         )
@@ -166,14 +164,18 @@ if __name__ == '__main__':
                     ep_times.append(time.time() - last_time)
                     last_time = time.time()
 
-                    print("Finish {} episodes with {:.3f} s!".format(ep_count, time.time() - start))
+                    print("Finish {} episodes with {:.3f} s!\n".format(ep_count, time.time() - start))
                     res = env.get_episode_result()
                     res["episode"] = ep_count
+                    res["env"] = formal_env_name
+                    res.update(ckpt_info)
                     saved_results.append(res)
                     df = pd.DataFrame(saved_results)
-                    print(pretty_print(res))
+                    print(pretty_print(
+                        {f"=== Evaluation Result for Episode {ep_count}/{num_episodes} {result_name}": res}
+                    ))
 
-                    path = f"evaluate_results/{ckpt_info['algo']}_{ckpt_info['env']}_{ckpt_info['trial']}_backup.csv"
+                    path = f"evaluate_results/{result_name}_backup.csv"
                     print("Backup data is saved at: ", path)
                     df.to_csv(path)
 
@@ -186,8 +188,6 @@ if __name__ == '__main__':
             env.close()
 
         df = pd.DataFrame(saved_results)
-        path = f"evaluate_results/{ckpt_info['algo']}_{ckpt_info['env']}_{ckpt_info['trial']}_backup.csv"
+        path = f"evaluate_results/{result_name}.csv"
         print("Final data is saved at: ", path)
         df.to_csv(path)
-        df["model_name"] = model_name
-        return df

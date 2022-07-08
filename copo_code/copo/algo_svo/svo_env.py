@@ -58,7 +58,7 @@ class SVOEnv:
                 # "angle": util = r_me * cos(svo) + r_other * sin(svo), svo in [0, pi/2]
                 # "angle" seems to be more stable!
                 svo_mode="angle",
-                svo_dist="uniform",  # "uniform" or "normal"
+                svo_dist="normal",  # "uniform" or "normal"
                 svo_normal_std=0.3,  # The initial STD of normal distribution, might change by calling functions.
                 return_native_reward=False,
                 include_ego_reward=False,
