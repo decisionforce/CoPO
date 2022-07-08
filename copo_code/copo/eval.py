@@ -97,7 +97,7 @@ if __name__ == '__main__':
             ckpt_file_path = osp.join(root, trial_path, ckpt_path, ckpt_path.replace("_", "-"))
             start_seed = eval(re.search("start_seed=(.*?),", trial_name)[1])
             print(
-                f"We will evaluate checkpoint: Algo{root.split('/')[-1]}, Env{raw_env_name}, Seed{start_seed}, "
+                f"We will evaluate checkpoint: Algo-{root.split('/')[-1]}, Env-{raw_env_name}, Seed-{start_seed}, "
                 f"Ckpt{ckpt_count}"
             )
             checkpoint_infos.append({
@@ -129,7 +129,7 @@ if __name__ == '__main__':
             should_wrap_cc_env=ckpt_info["should_wrap_cc_env"], svo_mean=lcf_mean, svo_std=lcf_std
         )
 
-        result_name = f"{ckpt_info['algo']}_{formal_env_name}_{ckpt_info['seed']}_{ckpt_info['count']}"
+        result_name = f"Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']}"
         print(f"\n === Evaluating {result_name} ===")
         if ckpt_info["should_wrap_copo_env"]:
             print("We are using CoPO environment! The LCF is set to Mean {}, STD {}".format(lcf_mean, lcf_std))
