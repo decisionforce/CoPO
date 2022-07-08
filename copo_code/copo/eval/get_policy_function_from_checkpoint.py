@@ -5,11 +5,11 @@ import os
 import pickle
 
 import pandas as pd
-from copo.eval.get_policy_function import PolicyFunction, _compute_actions_for_torch_policy, \
+from copo.eval.get_policy_function import PolicyFunction, _compute_actions_for_torch_policy2, \
     _compute_actions_for_tf_policy
 
 
-def get_policy_function_from_checkpoint(ckpt, deterministic=False, policy_name="default", layer_name_suffix="_1"):
+def get_policy_function_from_checkpoint(algo, ckpt, deterministic=False, policy_name="default"):
     assert os.path.isfile(ckpt)
 
     with open(ckpt, "rb") as f:
@@ -20,17 +20,22 @@ def get_policy_function_from_checkpoint(ckpt, deterministic=False, policy_name="
         worker["state"][policy_name].pop("_optimizer_variables")
     weights = worker["state"][policy_name]
 
-    if "weights" in weights:
-        using_torch_policy = True
+    if "copo" in algo:
+        layer_name_suffix = "_1"
+    else:
+        layer_name_suffix = ""
+
+    if "ccppo" in algo:
         weights = weights["weights"]
         weights = {k: v for k, v in weights.items() if "value" not in k}
-        policy_class = _compute_actions_for_torch_policy
+        policy_class = _compute_actions_for_torch_policy2
     else:
         weights = {k: v for k, v in weights.items() if "value" not in k}
         policy_class = _compute_actions_for_tf_policy
 
     def policy(obs):
-        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix=layer_name_suffix, deterministic=deterministic)
+        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix=layer_name_suffix,
+                           deterministic=deterministic)
         return ret
 
     policy_function = PolicyFunction(policy=policy)

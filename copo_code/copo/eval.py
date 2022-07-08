@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
     for ckpt_info in checkpoint_infos:
         assert os.path.isfile(ckpt_info["path"]), ckpt_info
-        policy_function = get_policy_function_from_checkpoint(ckpt_info["path"], layer_name_suffix=layer_name_suffix)
+        policy_function = get_policy_function_from_checkpoint(ckpt_info["algo"], ckpt_info["path"])
         if ckpt_info["should_wrap_copo_env"]:
             lcf_mean, lcf_std = get_lcf_from_checkpoint(ckpt_info["trial_path"])
         else:
