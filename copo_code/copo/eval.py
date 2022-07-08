@@ -10,7 +10,7 @@ import os.path as osp
 import re
 import time
 import argparse
-
+import json
 import numpy as np
 import pandas as pd
 from copo import pretty_print
@@ -62,6 +62,15 @@ def get_env(env, should_wrap_copo_env, should_wrap_cc_env, svo_mean=0.0, svo_std
     return RecorderEnv(env), env_name
 
 
+def get_env_and_start_seed(trial_path):
+    param_path = os.path.join(trial_path, "params.json")
+    assert os.path.isfile(param_path)
+    with open(param_path, "r") as f:
+        param = json.load(f)
+    start_seed = param["env_config"]["start_seed"]
+    env_name = param["env"]
+    return env_name, start_seed
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo")
@@ -79,7 +88,7 @@ if __name__ == '__main__':
     for pi, (trial_path, trial_name) in enumerate(paths):
         print(f"Finish {pi + 1}/{len(paths)} trials.")
 
-        raw_env_name = trial_name.split("_")[1]
+        raw_env_name, start_seed = get_env_and_start_seed(trial_path)
 
         should_wrap_cc_env = "CCPPO" in trial_name
         should_wrap_copo_env = "CoPO" in trial_name
@@ -95,7 +104,6 @@ if __name__ == '__main__':
 
         for ckpt_path, ckpt_count in ckpt_paths:
             ckpt_file_path = osp.join(root, trial_path, ckpt_path, ckpt_path.replace("_", "-"))
-            start_seed = eval(re.search("start_seed=(.*?),", trial_name)[1])
             print(
                 f"We will evaluate checkpoint: Algo-{root.split('/')[-1]}, Env-{raw_env_name}, Seed-{start_seed}, "
                 f"Ckpt{ckpt_count}"
