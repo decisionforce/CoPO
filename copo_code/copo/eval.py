@@ -23,14 +23,22 @@ from metadrive.envs.marl_envs import MultiAgentIntersectionEnv, MultiAgentRounda
 def get_env(env, should_wrap_copo_env, should_wrap_cc_env, svo_mean=0.0, svo_std=0.0):
     if "Roundabout" in env:
         env_cls = MultiAgentRoundaboutEnv
+        env_name = "Round"
     elif "Intersection" in env:
         env_cls = MultiAgentIntersectionEnv
+        env_name = "Inter"
     elif "Parking" in env:
         env_cls = MultiAgentParkingLotEnv
+        env_name = "Parking"
     elif "Bottle" in env:
         env_cls = MultiAgentBottleneckEnv
+        env_name = "Bottle"
     elif "Tollgate" in env:
         env_cls = MultiAgentTollgateEnv
+        env_name = "Tollgate"
+    elif "XXXX" in env:
+        env_cls = XXX
+        env_name = "PGMap"
     else:
         raise ValueError()
 
@@ -137,9 +145,12 @@ if __name__ == '__main__':
 
                 if step_count % 100 == 0:
                     print(
-                        "Evaluating {}, Num episodes: {}, Num steps in this episode: {} (Ep time {:.2f}, "
+                        "Evaluating {} {} {}, Num episodes: {}, Num steps in this episode: {} (Ep time {:.2f}, "
                         "Total time {:.2f})".format(
-                            ckpt_path, ep_count, step_count, np.mean(ep_times),
+                            ckpt_info["algo"],
+                            ckpt_info["env"],
+                            ckpt_info["trial"],
+                            ep_count, step_count, np.mean(ep_times),
                             time.time() - start
                         )
                     )
@@ -162,7 +173,7 @@ if __name__ == '__main__':
                     df = pd.DataFrame(saved_results)
                     print(pretty_print(res))
 
-                    path = "evaluate_results/{}{}_backup.csv".format(model_name, suffix)
+                    path = f"evaluate_results/{ckpt_info['algo']}_{ckpt_info['env']}_{ckpt_info['trial']}_backup.csv"
                     print("Backup data is saved at: ", path)
                     df.to_csv(path)
 
@@ -175,7 +186,7 @@ if __name__ == '__main__':
             env.close()
 
         df = pd.DataFrame(saved_results)
-        path = "evaluate_results/{}{}.csv".format(model_name, suffix)
+        path = f"evaluate_results/{ckpt_info['algo']}_{ckpt_info['env']}_{ckpt_info['trial']}_backup.csv"
         print("Final data is saved at: ", path)
         df.to_csv(path)
         df["model_name"] = model_name
