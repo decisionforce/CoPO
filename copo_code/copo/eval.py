@@ -53,7 +53,7 @@ def get_env(env, should_wrap_copo_env, should_wrap_cc_env, svo_mean=0.0, svo_std
 
     elif should_wrap_cc_env:
         assert should_wrap_copo_env is False
-        env_cls = get_ccppo_env(env_cls)
+        env_cls = get_ccenv(env_cls)
         env = env_cls({})
 
     else:
