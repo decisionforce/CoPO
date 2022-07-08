@@ -7,6 +7,7 @@ import os
 import os.path as osp
 import re
 import time
+import argparse
 
 import numpy as np
 import pandas as pd
@@ -60,9 +61,16 @@ def get_env(env, should_wrap_copo_env, should_wrap_cc_env, svo_mean=0.0, svo_std
 
 
 if __name__ == '__main__':
-    num_episodes = 1
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo")
+    parser.add_argument("--num_episodes", type=int, default=20)
+    parser.add_argument("--layer_name_suffix", type=str, default="_1")
+    args = parser.parse_args()
 
-    root = "eval/demo_raw_checkpoints/copo"
+    root = args.root
+    num_episodes = args.num_episodes
+    layer_name_suffix = args.layer_name_suffix
+
     root = os.path.abspath(root)
     checkpoint_infos = []
     paths = [(osp.join(root, p), p) for p in os.listdir(root) if osp.isdir(osp.join(root, p))]
@@ -107,7 +115,7 @@ if __name__ == '__main__':
 
     for ckpt_info in checkpoint_infos:
         assert os.path.isfile(ckpt_info["path"]), ckpt_info
-        policy_function = get_policy_function_from_checkpoint(ckpt_info["path"])
+        policy_function = get_policy_function_from_checkpoint(ckpt_info["path"], layer_name_suffix=layer_name_suffix)
         if ckpt_info["should_wrap_copo_env"]:
             lcf_mean, lcf_std = get_lcf_from_checkpoint(ckpt_info["trial_path"])
         else:
