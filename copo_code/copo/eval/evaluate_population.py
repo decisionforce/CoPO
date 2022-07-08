@@ -1,6 +1,8 @@
 """
 Zhenghao: This script is not intended to be used formally by other users since I just used it to evaluate my trained
-agent personally. I wish to formally prepare a script so that other researchers can evaluate their agents too!
+populations. You can use it directly to evaluate provided checkpoints.
+
+For your own population, please refer to copo_code/copo/eval.py for a formal script to evaluate!
 """
 
 import argparse

@@ -1,6 +1,8 @@
 """
-Zhenghao: This script is not intended to be used formally by other users since I just used it to evaluate my trained
-agent personally. I wish to formally prepare a script so that other researchers can evaluate their agents too!
+Zhenghao: This is a formal script to evaluate trained population from RLLib's generated files directly!
+
+You can specify the path to a "experiment folder" who contains many "trial folders". You need to make in each
+"trial folder", a set of checkpoint folders exist and the progress.csv exists too if you are evaluating CoPO population.
 """
 
 import os
