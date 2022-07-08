@@ -26,7 +26,6 @@ def get_policy_function_from_checkpoint(algo, ckpt, deterministic=False, policy_
         layer_name_suffix = ""
 
     if "ccppo" in algo:
-        weights = weights["weights"]
         weights = {k: v for k, v in weights.items() if "value" not in k}
         policy_class = _compute_actions_for_torch_policy2
     else:
