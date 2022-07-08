@@ -31,10 +31,14 @@ conda activate copo
 git clone https://github.com/decisionforce/metadrive
 cd metadrive
 pip install -e .
+cd ..
 
 # Install dependency
 pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
-cd copo_code
+
+# Install CoPO repo
+git clone https://github.com/decisionforce/CoPO
+cd CoPO/copo_code
 pip install -e .
 ```
 

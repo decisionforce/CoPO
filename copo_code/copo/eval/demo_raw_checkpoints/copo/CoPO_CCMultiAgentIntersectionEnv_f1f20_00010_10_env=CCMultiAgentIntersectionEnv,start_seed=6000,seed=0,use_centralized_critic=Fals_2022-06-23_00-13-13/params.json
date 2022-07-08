@@ -1,0 +1,18 @@
+{
+  "callbacks": "<class 'copo.callbacks.MultiAgentDrivingCallbacks'>",
+  "env": "CCMultiAgentIntersectionEnv",
+  "env_config": {
+    "neighbours_distance": 40,
+    "start_seed": 6000
+  },
+  "initial_svo_std": 0.1,
+  "log_level": "INFO",
+  "num_cpus_per_worker": 0.1,
+  "num_gpus": 0.5,
+  "seed": 0,
+  "svo_lr": 0.0001,
+  "svo_num_iters": 5,
+  "use_centralized_critic": false,
+  "use_distributional_svo": true,
+  "use_global_value": true
+}
