@@ -33,8 +33,9 @@ def get_policy_function_from_checkpoint(algo, ckpt, deterministic=False, policy_
         policy_class = _compute_actions_for_tf_policy
 
     def policy(obs):
-        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix=layer_name_suffix,
-                           deterministic=deterministic)
+        ret = policy_class(
+            weights, obs, policy_name=policy_name, layer_name_suffix=layer_name_suffix, deterministic=deterministic
+        )
         return ret
 
     policy_function = PolicyFunction(policy=policy)

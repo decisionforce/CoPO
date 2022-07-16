@@ -97,6 +97,7 @@ def _compute_actions_for_torch_policy(weights, obs, deterministic=False):
     action = np.random.normal(mean, std)
     return action
 
+
 def _compute_actions_for_torch_policy2(weights, obs, policy_name=None, layer_name_suffix=None, deterministic=None):
     obs = np.asarray(obs)
     assert obs.ndim == 2

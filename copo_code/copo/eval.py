@@ -71,6 +71,7 @@ def get_env_and_start_seed(trial_path):
     env_name = param["env"]
     return env_name, start_seed
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo")
@@ -108,17 +109,19 @@ if __name__ == '__main__':
                 f"We will evaluate checkpoint: Algo-{root.split('/')[-1]}, Env-{raw_env_name}, Seed-{start_seed}, "
                 f"Ckpt{ckpt_count}"
             )
-            checkpoint_infos.append({
-                "path": ckpt_file_path,
-                "count": ckpt_count,
-                "algo": root.split('/')[-1],
-                "env": raw_env_name,
-                "seed": start_seed,
-                "trial": trial_name,
-                "trial_path": trial_path,
-                "should_wrap_copo_env": should_wrap_copo_env,
-                "should_wrap_cc_env": should_wrap_cc_env
-            })
+            checkpoint_infos.append(
+                {
+                    "path": ckpt_file_path,
+                    "count": ckpt_count,
+                    "algo": root.split('/')[-1],
+                    "env": raw_env_name,
+                    "seed": start_seed,
+                    "trial": trial_name,
+                    "trial_path": trial_path,
+                    "should_wrap_copo_env": should_wrap_copo_env,
+                    "should_wrap_cc_env": should_wrap_cc_env
+                }
+            )
 
     os.makedirs("evaluate_results", exist_ok=True)
     saved_results = []
@@ -133,8 +136,11 @@ if __name__ == '__main__':
 
         # Setup environment
         env, formal_env_name = get_env(
-            env=ckpt_info["env"], should_wrap_copo_env=ckpt_info["should_wrap_copo_env"],
-            should_wrap_cc_env=ckpt_info["should_wrap_cc_env"], svo_mean=lcf_mean, svo_std=lcf_std
+            env=ckpt_info["env"],
+            should_wrap_copo_env=ckpt_info["should_wrap_copo_env"],
+            should_wrap_cc_env=ckpt_info["should_wrap_cc_env"],
+            svo_mean=lcf_mean,
+            svo_std=lcf_std
         )
 
         result_name = f"Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']}"
@@ -163,10 +169,8 @@ if __name__ == '__main__':
                     print(
                         "Evaluating {} {} {}, Num episodes: {}, Num steps in this episode: {} (Ep time {:.2f}, "
                         "Total time {:.2f})".format(
-                            ckpt_info["algo"],
-                            formal_env_name,
-                            ckpt_info["seed"],
-                            ep_count, step_count, np.mean(ep_times),
+                            ckpt_info["algo"], formal_env_name, ckpt_info["seed"], ep_count, step_count,
+                            np.mean(ep_times),
                             time.time() - start
                         )
                     )
@@ -189,9 +193,11 @@ if __name__ == '__main__':
                     res.update(ckpt_info)
                     saved_results.append(res)
                     df = pd.DataFrame(saved_results)
-                    print(pretty_print(
-                        {f"=== Evaluation Result for Episode {ep_count}/{num_episodes} {result_name}": res}
-                    ))
+                    print(
+                        pretty_print(
+                            {f"=== Evaluation Result for Episode {ep_count}/{num_episodes} {result_name}": res}
+                        )
+                    )
 
                     path = f"evaluate_results/{result_name}_backup.csv"
                     print("Backup data is saved at: ", path)
