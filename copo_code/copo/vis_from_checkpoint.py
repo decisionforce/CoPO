@@ -66,7 +66,7 @@ if __name__ == "__main__":
         weights = {k: v for k, v in weights.items() if "value" not in k}
 
     def policy(obs):
-        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix="", deterministic=deterministic)
+        ret = policy_class(weights, obs, policy_name=policy_name, layer_name_suffix="_1", deterministic=deterministic)
         return ret
 
     policy_function = PolicyFunction(policy=policy)
