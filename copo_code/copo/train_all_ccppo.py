@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
         # ===== MAPPO =====
         counterfactual=tune.grid_search([True]),
-        fuse_mode=tune.grid_search(["mf"]),
+        fuse_mode=tune.grid_search(["mf", "concat"]),
         mf_nei_distance=tune.grid_search([10]),
     )
 
