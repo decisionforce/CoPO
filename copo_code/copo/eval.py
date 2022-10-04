@@ -74,14 +74,12 @@ def get_env_and_start_seed(trial_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo")
-    parser.add_argument("--num_episodes", type=int, default=20)
-    parser.add_argument("--layer_name_suffix", type=str, default="_1")
+    parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo", help="The path ending up with your exp_name.")
+    parser.add_argument("--num_episodes", type=int, default=20, help="How many episodes you want to run for a single checkpoint.")
     args = parser.parse_args()
 
     root = args.root
     num_episodes = args.num_episodes
-    layer_name_suffix = args.layer_name_suffix
 
     root = os.path.abspath(root)
     checkpoint_infos = []
