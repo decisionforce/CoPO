@@ -78,6 +78,8 @@ if __name__ == '__main__':
     parser.add_argument("--num_episodes", type=int, default=20, help="How many episodes you want to run for a single checkpoint.")
     args = parser.parse_args()
 
+    print("Evaluation begins. The results will be saved at: ", "./evaluate_results/")
+
     root = args.root
     num_episodes = args.num_episodes
 
