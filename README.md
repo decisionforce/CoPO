@@ -6,6 +6,7 @@
 
 ```diff
 Changelog:
++ October XX, 2022: XXXXXXXX
 + June 22, 2022: Update README to include FAQ, update evaluate population script
 + June 23, 2022: Update a demo script to draw population evaluation results (See FAQ section)
 + July 7, 2022: Remove redundant files and use `train_all_*` scripts
@@ -60,7 +61,7 @@ The general way to run training is following:
 
 ```
 cd copo_code/copo/
-python train_all_ALGO.py --exp-name EXPNAME 
+python train_all_ALGO.py --exp-name EXPNAME
 ```
 
 Here `EXPNAME` is arbitrary name to represent the experiment. One experiment contains multiple concurrent trials with different random seeds or sweeps of hyper-parameter. By default the exp name is `TEST`.
@@ -101,6 +102,29 @@ Please feel free to contact us if you have any questions, thanks!
 
 You can also try [vis_from_checkpoint.py](copo_code/copo/vis_from_checkpoint.py) that
 can directly load model from RLLib checkpoint.
+
+
+## Evaluation
+
+Evaluation is important to collect the test time performance of your agents. 
+We will use evaluation results to draw the Radar figure with three metrics: safety, completeness and efficiency.
+
+
+You can easily evaluate your trained agents via our provided script: `copo_code/copo/eval.py`. 
+Suppose you use train script `python train_all_ippo.py --exp-name my_ippo`, then you can run the evaluation via:
+
+```bash
+cd copo_code/copo/
+
+# Training
+python train_all_ippo.py --exp-name my_ippo
+
+# Evaluating
+python eval.py --root my_ippo
+``` 
+
+The evaluation results will be saved to `copo_code/copo/evaluate_results`. 
+Now, please refer to XXXXXXTODO 
 
 
 ## FAQ
