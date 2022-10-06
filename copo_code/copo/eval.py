@@ -67,6 +67,11 @@ def get_env_and_start_seed(trial_path):
     assert os.path.isfile(param_path)
     with open(param_path, "r") as f:
         param = json.load(f)
+
+    if "env_config" not in param:
+        print(param)
+        raise ValueError()
+
     start_seed = param["env_config"]["start_seed"]
     env_name = param["env"]
     return env_name, start_seed
