@@ -74,7 +74,7 @@ def get_env_and_start_seed(trial_path):
 
     start_seed = param["env_config"]["start_seed"]
     env_name = param["env"]
-    return env_name, start_seed
+    return env_name, start_seed, param
 
 
 if __name__ == '__main__':
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     for pi, (trial_path, trial_name) in enumerate(paths):
         print(f"Finish {pi + 1}/{len(paths)} trials.")
 
-        raw_env_name, start_seed = get_env_and_start_seed(trial_path)
+        raw_env_name, start_seed, ckpt_config = get_env_and_start_seed(trial_path)
 
         should_wrap_cc_env = "CCPPO" in trial_name
         should_wrap_copo_env = "CoPO" in trial_name
@@ -114,8 +114,10 @@ if __name__ == '__main__':
                 f"We will evaluate checkpoint: Algo-{root.split('/')[-1]}, Env-{raw_env_name}, Seed-{start_seed}, "
                 f"Ckpt{ckpt_count}"
             )
-            checkpoint_infos.append(
-                {
+
+            algo = root.split('/')[-1]
+
+            ckpt_info = {
                     "path": ckpt_file_path,
                     "count": ckpt_count,
                     "algo": root.split('/')[-1],
@@ -125,8 +127,11 @@ if __name__ == '__main__':
                     "trial_path": trial_path,
                     "should_wrap_copo_env": should_wrap_copo_env,
                     "should_wrap_cc_env": should_wrap_cc_env
-                }
-            )
+            }
+
+            ckpt_info["config"] = ckpt_config
+
+            checkpoint_infos.append(ckpt_info)
 
     os.makedirs("evaluate_results", exist_ok=True)
     saved_results = []
