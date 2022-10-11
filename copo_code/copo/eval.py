@@ -129,7 +129,7 @@ if __name__ == '__main__':
                     "should_wrap_cc_env": should_wrap_cc_env
             }
 
-            ckpt_info["config"] = ckpt_config
+            # ckpt_info["config"] = ckpt_config
 
             checkpoint_infos.append(ckpt_info)
 
