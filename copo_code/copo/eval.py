@@ -138,7 +138,9 @@ if __name__ == '__main__':
     os.makedirs("evaluate_results", exist_ok=True)
     saved_results = []
 
-    print("checkpoint_infos: ", checkpoint_infos)
+    result_name = f"{root.split('/')[-1]}_evaluate_results"
+
+    # print("checkpoint_infos: ", checkpoint_infos)
 
     for ckpt_count, ckpt_info in enumerate(checkpoint_infos):
 
@@ -151,88 +153,83 @@ if __name__ == '__main__':
         else:
             lcf_mean = lcf_std = 0.0
 
-        result_name = f"Algo-{ckpt_info['algo']}_Env-{'xx'}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']}"
-        print("printing: ", ckpt_count, result_name, ckpt_info["env"], ckpt_info["path"])
-
-
         # Setup environment
-        # env, formal_env_name = get_env(
-        #     env=ckpt_info["env"],
-        #     should_wrap_copo_env=ckpt_info["should_wrap_copo_env"],
-        #     should_wrap_cc_env=ckpt_info["should_wrap_cc_env"],
-        #     svo_mean=lcf_mean,
-        #     svo_std=lcf_std
-        # )
-        #
-        # result_name = f"Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']}"
-        # print(f"\n === Evaluating {result_name} ===")
-        # if ckpt_info["should_wrap_copo_env"]:
-        #     print("We are using CoPO environment! The LCF is set to Mean {}, STD {}".format(lcf_mean, lcf_std))
-        #
-        # # Evaluate this checkpoint for sufficient episodes.
-        # try:
-        #     o = env.reset()
-        #     d = {"__all__": False}
-        #     start = time.time()
-        #     last_time = time.time()
-        #     ep_count = 0
-        #     step_count = 0
-        #     ep_times = []
-        #     while True:
-        #
-        #         # Step the environment
-        #         o, r, d, info = env.step(policy_function(o, d))
-        #         step_count += 1
-        #
-        #         # env.render(mode="topdown")
-        #
-        #         if step_count % 100 == 0:
-        #             print(
-        #                 "Evaluating {} {} {}, Num episodes: {}, Num steps in this episode: {} (Ep time {:.2f}, "
-        #                 "Total time {:.2f})".format(
-        #                     ckpt_info["algo"], formal_env_name, ckpt_info["seed"], ep_count, step_count,
-        #                     np.mean(ep_times),
-        #                     time.time() - start
-        #                 )
-        #             )
-        #
-        #         # Reset the environment
-        #         if d["__all__"]:
-        #             policy_function.reset()
-        #
-        #             step_count = 0
-        #             ep_count += 1
-        #             o = env.reset()
-        #
-        #             ep_times.append(time.time() - last_time)
-        #             last_time = time.time()
-        #
-        #             print("Finish {} episodes with {:.3f} s!\n".format(ep_count, time.time() - start))
-        #             res = env.get_episode_result()
-        #             res.update(ckpt_info)
-        #             res["episode"] = ep_count
-        #             res["env"] = formal_env_name
-        #             saved_results.append(res)
-        #             df = pd.DataFrame(saved_results)
-        #             print(
-        #                 pretty_print(
-        #                     {f"=== Evaluation Result for Episode {ep_count}/{num_episodes} {result_name}": res}
-        #                 )
-        #             )
-        #
-        #             path = f"evaluate_results/{result_name}.csv"
-        #             print("Backup data is saved at: ", path)
-        #             df.to_csv(path)
-        #
-        #             d = {"__all__": False}
-        #             if ep_count >= num_episodes:
-        #                 break
-        # except Exception as e:
-        #     raise e
-        # finally:
-        #     env.close()
-        #
-        # df = pd.DataFrame(saved_results)
-        # path = f"evaluate_results/{result_name}.csv"
-        # print("Final data is saved at: ", path)
-        # df.to_csv(path)
+        env, formal_env_name = get_env(
+            env=ckpt_info["env"],
+            should_wrap_copo_env=ckpt_info["should_wrap_copo_env"],
+            should_wrap_cc_env=ckpt_info["should_wrap_cc_env"],
+            svo_mean=lcf_mean,
+            svo_std=lcf_std
+        )
+
+        print(f"\n === Evaluating Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']} ===")
+        if ckpt_info["should_wrap_copo_env"]:
+            print("We are using CoPO environment! The LCF is set to Mean {}, STD {}".format(lcf_mean, lcf_std))
+
+        # Evaluate this checkpoint for sufficient episodes.
+        try:
+            o = env.reset()
+            d = {"__all__": False}
+            start = time.time()
+            last_time = time.time()
+            ep_count = 0
+            step_count = 0
+            ep_times = []
+            while True:
+
+                # Step the environment
+                o, r, d, info = env.step(policy_function(o, d))
+                step_count += 1
+
+                # env.render(mode="topdown")
+
+                if step_count % 100 == 0:
+                    print(
+                        "Evaluating {} {} {}, Num episodes: {}, Num steps in this episode: {} (Ep time {:.2f}, "
+                        "Total time {:.2f})".format(
+                            ckpt_info["algo"], formal_env_name, ckpt_info["seed"], ep_count, step_count,
+                            np.mean(ep_times),
+                            time.time() - start
+                        )
+                    )
+
+                # Reset the environment
+                if d["__all__"]:
+                    policy_function.reset()
+
+                    step_count = 0
+                    ep_count += 1
+                    o = env.reset()
+
+                    ep_times.append(time.time() - last_time)
+                    last_time = time.time()
+
+                    print("Finish {} episodes with {:.3f} s!\n".format(ep_count, time.time() - start))
+                    res = env.get_episode_result()
+                    res.update(ckpt_info)
+                    res["episode"] = ep_count
+                    res["env"] = formal_env_name
+                    saved_results.append(res)
+                    df = pd.DataFrame(saved_results)
+                    print(
+                        pretty_print(
+                            {f"=== Evaluation Result for Episode {ep_count}/{num_episodes} {result_name}": res}
+                        )
+                    )
+
+                    path = f"evaluate_results/{result_name}.csv"
+                    print("Backup data is saved at: ", path)
+                    df.to_csv(path)
+
+                    d = {"__all__": False}
+                    if ep_count >= num_episodes:
+                        break
+        except Exception as e:
+            raise e
+        finally:
+            env.close()
+
+        df = pd.DataFrame(saved_results)
+        path = f"evaluate_results/{result_name}.csv"
+        print("Final data is saved at: ", path)
+        df.to_csv(path)
