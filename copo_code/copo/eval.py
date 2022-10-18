@@ -151,7 +151,7 @@ if __name__ == '__main__':
         else:
             lcf_mean = lcf_std = 0.0
 
-        result_name = f"Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']}"
+        result_name = f"Algo-{ckpt_info['algo']}_Env-{'xx'}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']}"
         print("printing: ", ckpt_count, result_name, ckpt_info["env"], ckpt_info["path"])
 
 
