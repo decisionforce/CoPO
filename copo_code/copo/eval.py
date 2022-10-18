@@ -132,6 +132,7 @@ if __name__ == '__main__':
 
             # ckpt_info["config"] = ckpt_config
 
+            checkpoint_infos.append(ckpt_info)
             # checkpoint_infos.append(copy.deepcopy(ckpt_info))
 
     os.makedirs("evaluate_results", exist_ok=True)
