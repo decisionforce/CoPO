@@ -209,7 +209,7 @@ if __name__ == '__main__':
                         )
                     )
 
-                    path = f"evaluate_results/{result_name}_backup.csv"
+                    path = f"evaluate_results/{result_name}.csv"
                     print("Backup data is saved at: ", path)
                     df.to_csv(path)
 
