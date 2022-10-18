@@ -137,6 +137,8 @@ if __name__ == '__main__':
     os.makedirs("evaluate_results", exist_ok=True)
     saved_results = []
 
+    print("checkpoint_infos: ", checkpoint_infos)
+
     for ckpt_count, ckpt_info in enumerate(checkpoint_infos):
 
         # ckpt_info = copy.deepcopy(ckpt_info)
@@ -148,7 +150,7 @@ if __name__ == '__main__':
         else:
             lcf_mean = lcf_std = 0.0
 
-        print(ckpt_count, ckpt_info)
+        print("printing: ", ckpt_count, ckpt_info)
 
 
         # Setup environment
