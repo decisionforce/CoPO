@@ -225,7 +225,7 @@ if __name__ == '__main__':
                     if ep_count >= num_episodes:
                         break
         except Exception as e:
-            raise e
+            print("Error encountered: ", e)
         finally:
             env.close()
 
