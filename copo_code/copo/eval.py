@@ -8,6 +8,7 @@ You can specify the path to a "experiment folder" who contains many "trial folde
 import os
 import os.path as osp
 import re
+import copy
 import time
 import argparse
 import json
@@ -67,21 +68,26 @@ def get_env_and_start_seed(trial_path):
     assert os.path.isfile(param_path)
     with open(param_path, "r") as f:
         param = json.load(f)
+
+    if "env_config" not in param:
+        print(param)
+        raise ValueError()
+
     start_seed = param["env_config"]["start_seed"]
     env_name = param["env"]
-    return env_name, start_seed
+    return env_name, start_seed, param
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo")
-    parser.add_argument("--num_episodes", type=int, default=20)
-    parser.add_argument("--layer_name_suffix", type=str, default="_1")
+    parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo", help="The path ending up with your exp_name.")
+    parser.add_argument("--num_episodes", type=int, default=20, help="How many episodes you want to run for a single checkpoint.")
     args = parser.parse_args()
+
+    print("Evaluation begins. The results will be saved at: ", "./evaluate_results/")
 
     root = args.root
     num_episodes = args.num_episodes
-    layer_name_suffix = args.layer_name_suffix
 
     root = os.path.abspath(root)
     checkpoint_infos = []
@@ -89,7 +95,7 @@ if __name__ == '__main__':
     for pi, (trial_path, trial_name) in enumerate(paths):
         print(f"Finish {pi + 1}/{len(paths)} trials.")
 
-        raw_env_name, start_seed = get_env_and_start_seed(trial_path)
+        raw_env_name, start_seed, ckpt_config = get_env_and_start_seed(trial_path)
 
         should_wrap_cc_env = "CCPPO" in trial_name
         should_wrap_copo_env = "CoPO" in trial_name
@@ -109,8 +115,10 @@ if __name__ == '__main__':
                 f"We will evaluate checkpoint: Algo-{root.split('/')[-1]}, Env-{raw_env_name}, Seed-{start_seed}, "
                 f"Ckpt{ckpt_count}"
             )
-            checkpoint_infos.append(
-                {
+
+            algo = root.split('/')[-1]
+
+            ckpt_info = {
                     "path": ckpt_file_path,
                     "count": ckpt_count,
                     "algo": root.split('/')[-1],
@@ -120,13 +128,24 @@ if __name__ == '__main__':
                     "trial_path": trial_path,
                     "should_wrap_copo_env": should_wrap_copo_env,
                     "should_wrap_cc_env": should_wrap_cc_env
-                }
-            )
+            }
+
+            # ckpt_info["config"] = ckpt_config
+
+            checkpoint_infos.append(ckpt_info)
+            # checkpoint_infos.append(copy.deepcopy(ckpt_info))
 
     os.makedirs("evaluate_results", exist_ok=True)
     saved_results = []
 
-    for ckpt_info in checkpoint_infos:
+    result_name = f"{root.split('/')[-1]}_evaluate_results"
+
+    # print("checkpoint_infos: ", checkpoint_infos)
+
+    for ckpt_count, ckpt_info in enumerate(checkpoint_infos):
+
+        # ckpt_info = copy.deepcopy(ckpt_info)
+
         assert os.path.isfile(ckpt_info["path"]), ckpt_info
         policy_function = get_policy_function_from_checkpoint(ckpt_info["algo"], ckpt_info["path"])
         if ckpt_info["should_wrap_copo_env"]:
@@ -143,8 +162,7 @@ if __name__ == '__main__':
             svo_std=lcf_std
         )
 
-        result_name = f"Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']}"
-        print(f"\n === Evaluating {result_name} ===")
+        print(f"\n === Evaluating Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']} ===")
         if ckpt_info["should_wrap_copo_env"]:
             print("We are using CoPO environment! The LCF is set to Mean {}, STD {}".format(lcf_mean, lcf_std))
 
@@ -188,9 +206,9 @@ if __name__ == '__main__':
 
                     print("Finish {} episodes with {:.3f} s!\n".format(ep_count, time.time() - start))
                     res = env.get_episode_result()
+                    res.update(ckpt_info)
                     res["episode"] = ep_count
                     res["env"] = formal_env_name
-                    res.update(ckpt_info)
                     saved_results.append(res)
                     df = pd.DataFrame(saved_results)
                     print(
@@ -199,7 +217,7 @@ if __name__ == '__main__':
                         )
                     )
 
-                    path = f"evaluate_results/{result_name}_backup.csv"
+                    path = f"evaluate_results/{result_name}.csv"
                     print("Backup data is saved at: ", path)
                     df.to_csv(path)
 
@@ -207,7 +225,7 @@ if __name__ == '__main__':
                     if ep_count >= num_episodes:
                         break
         except Exception as e:
-            raise e
+            print("Error encountered: ", e)
         finally:
             env.close()
 

@@ -2,7 +2,7 @@ import os
 # If pickle raise error, try to use pickle5! Install: pip install pickle5
 # and use:
 # import pickle5 as pickle
-import pickle
+# import pickle
 
 import pandas as pd
 from copo.eval.get_policy_function import PolicyFunction, _compute_actions_for_torch_policy2, \
@@ -10,12 +10,20 @@ from copo.eval.get_policy_function import PolicyFunction, _compute_actions_for_t
 
 
 def get_policy_function_from_checkpoint(algo, ckpt, deterministic=False, policy_name="default"):
-    assert os.path.isfile(ckpt)
+    assert os.path.isfile(ckpt), ckpt
 
     with open(ckpt, "rb") as f:
         data = f.read()
-    unpickled = pickle.loads(data)
-    worker = pickle.loads(unpickled.pop("worker"))
+
+    try:
+        import pickle
+        unpickled = pickle.loads(data)
+        worker = pickle.loads(unpickled.pop("worker"))
+    except ValueError or KeyError:
+        import pickle5 as pickle
+        unpickled = pickle.loads(data)
+        worker = pickle.loads(unpickled.pop("worker"))
+
     if "_optimizer_variables" in worker["state"][policy_name]:
         worker["state"][policy_name].pop("_optimizer_variables")
     weights = worker["state"][policy_name]
@@ -44,7 +52,7 @@ def get_policy_function_from_checkpoint(algo, ckpt, deterministic=False, policy_
 
 def get_lcf_from_checkpoint(trial_path):
     file = os.path.join(trial_path, "progress.csv")
-    assert os.path.isfile(file), "We expect to use progress.csv to extract LCF!"
+    assert os.path.isfile(file), f"We expect to use progress.csv to extract LCF! The folder should be: {trial_path}"
     df = pd.read_csv(file)
 
     svo_mean = df.loc[df.index[-1], "info/learner/svo"]

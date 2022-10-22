@@ -1,11 +1,13 @@
 # Code for Coordinated Policy Optimization
 
 [**Webpage**](https://decisionforce.github.io/CoPO) | [**Code**](https://github.com/decisionforce/CoPO) |  [**Paper**](https://arxiv.org/pdf/2110.13827.pdf) | [**Talk (English)**](https://youtu.be/sOw43l8lwxE) | [**Talk (Chinese)**](https://www.bilibili.com/video/BV1gr4y1C7Ab)
+| [**Results&Models**](https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL)
 
 
 
 ```diff
 Changelog:
++ October 22, 2022: Update latest experiments results, curves and models!
 + June 22, 2022: Update README to include FAQ, update evaluate population script
 + June 23, 2022: Update a demo script to draw population evaluation results (See FAQ section)
 + July 7, 2022: Remove redundant files and use `train_all_*` scripts
@@ -18,6 +20,11 @@ Hi there! This is the source code of the paper “Learning to Simulate Self-driv
 
 Please following the tutorial below to kickoff the reproduction of our results.
 
+
+## 🎉 Results, curves and models
+
+Please refer to this link for latest training and evaluation results, learning curves, scripts to draw figures and models:
+https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL
 
 
 ## Installation
@@ -60,7 +67,7 @@ The general way to run training is following:
 
 ```
 cd copo_code/copo/
-python train_all_ALGO.py --exp-name EXPNAME 
+python train_all_ALGO.py --exp-name EXPNAME
 ```
 
 Here `EXPNAME` is arbitrary name to represent the experiment. One experiment contains multiple concurrent trials with different random seeds or sweeps of hyper-parameter. By default the exp name is `TEST`.
@@ -84,35 +91,56 @@ We provide the trained models for all algorithms in all environments. A simple c
 
 ```
 cd copo_code/copo
-python vis.py 
+
+# Download and unzip this file:
+wget https://github.com/metadriverse/metadrive-benchmark/releases/download/asset-marl/new_best_checkpoints.zip
+unzip new_best_checkpoints.zip
+
+python new_vis.py 
 
 # In default, we provide you the CoPO population in Intersection environment. 
 # If you want to see others, try:
-python vis.py --env round --algo ippo
+python new_vis.py --env round --algo ippo
 
 # Or you can use the native renderer for 3D rendering:
 #  Press H to show helper message
 #  Press Q to switch to third-person view
-python vis.py --env tollgate --algo cl --use_native_render
+python new_vis.py --env tollgate --algo cl --use_native_render
 ```
 
 We hope you enjoy the interesting behaviors learned in this work! 
 Please feel free to contact us if you have any questions, thanks! 
 
-You can also try [vis_from_checkpoint.py](copo_code/copo/vis_from_checkpoint.py) that
-can directly load model from RLLib checkpoint.
+There are two legacy scripts for visualization [vis_from_checkpoint.py](copo_code/copo/vis_from_checkpoint.py) and [vis.py](copo_code/copo/vis.py).
+However, the performance of the agents varies largely due to the changes in MetaDrive environment.
+The [new_vis.py](copo_code/copo/new_vis.py) instead runs the trained models from latest benchmark:
+https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL
+
+
+## Evaluation
+
+Evaluation is important to collect the test time performance of your agents. 
+We will use evaluation results to draw the Radar figure with three metrics: safety, completeness and efficiency.
+
+
+You can easily evaluate your trained agents via our provided script: `copo_code/copo/eval.py`. 
+Suppose you use train script `python train_all_ippo.py --exp-name my_ippo`, then you can run the evaluation via:
+
+```bash
+cd copo_code/copo/
+
+# Training
+python train_all_ippo.py --exp-name my_ippo
+
+# Evaluating
+python eval.py --root my_ippo
+``` 
+
+The evaluation results will be saved to `copo_code/copo/evaluate_results`. 
+Now, please refer to this link for script to draw figures:  https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL
 
 
 ## FAQ
-
-
-### How to draw beautiful radar-like figure on three metrics?
-
-Please take a look on [copo_code/copo/eval/DrawEvalResult.ipynb](copo_code/copo/eval/DrawEvalResult.ipynb) file, where
-I present a demo script to draw such figure. 
-
-**Note that I am benchmarking different algorithm with latest MetaDrive! I will update a formal evaluation scripts and upload all trained models and results once the benchmarking finishes. Stay tuned!**
-
 
 ### How to run CoPO in the local mode?
 

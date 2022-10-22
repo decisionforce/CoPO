@@ -26,7 +26,6 @@ if __name__ == "__main__":
     parser.add_argument("--env", default="inter", type=str)
     parser.add_argument("--algo", default="copo", type=str)
     parser.add_argument("--use_native_render", action="store_true")
-    parser.add_argument("--fast", action="store_true")
     args = parser.parse_args()
 
     # ===== Load trained policy =====
@@ -39,8 +38,6 @@ if __name__ == "__main__":
 
     # ===== Running =====
     o = env.reset()
-    if args.fast:
-        env.pg_world.force_fps.toggle()  # Remove real-time rendering
     d = {"__all__": False}
     ep_success = 0
     ep_step = 0
@@ -69,14 +66,15 @@ if __name__ == "__main__":
             o = env.reset()
             d = {"__all__": False}
             policy_function.reset()
-            break
+            # break
         if args.use_native_render:
             env.render(
                 text={
                     "total agents": ep_agent,
                     "existing agents": len(o),
                     "success rate": ep_success / ep_agent if ep_agent > 0 else None,
-                    "ep step": ep_step
+                    "ep step": ep_step,
+                    "Press": "Q to switch view"
                 }
             )
         else:

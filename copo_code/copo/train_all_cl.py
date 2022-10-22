@@ -34,7 +34,12 @@ if __name__ == "__main__":
     train(
         IPPOCL,
         exp_name=exp_name,
-        keep_checkpoints_num=3,
+
+        # Note: We should remove this argument for CL! Since the best training performance
+        # happens in the early stage of CL training, but the checkpoint at that time has
+        # poor test-time performance!
+        # keep_checkpoints_num=3,
+
         stop=stop,
         config=config,
         num_gpus=args.num_gpus,
