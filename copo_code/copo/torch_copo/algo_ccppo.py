@@ -42,9 +42,7 @@ class CCPPOConfig(IPPOConfig):
         self.fuse_mode = "mf"  # In ["concat", "mf", "none"]
         self.mf_nei_distance = 10
         self.old_value_loss = True
-        self.update_from_dict({
-            "model": {"custom_model": "cc_model"}
-        })
+        self.update_from_dict({"model": {"custom_model": "cc_model"}})
 
     def validate(self):
         super().validate()
@@ -55,7 +53,7 @@ class CCPPOConfig(IPPOConfig):
 
 
 def get_centralized_critic_obs_dim(
-        observation_space_shape, action_space_shape, counterfactual, num_neighbours, fuse_mode
+    observation_space_shape, action_space_shape, counterfactual, num_neighbours, fuse_mode
 ):
     """Get the centralized critic"""
     if fuse_mode == "concat":
@@ -75,20 +73,15 @@ def get_centralized_critic_obs_dim(
 
 class CCModel(TorchModelV2, nn.Module):
     """Multi-agent model that implements a centralized VF."""
-
     def __init__(
-            self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
-            model_config: ModelConfigDict, name: str
+        self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
+        model_config: ModelConfigDict, name: str
     ):
 
-        TorchModelV2.__init__(
-            self, obs_space, action_space, num_outputs, model_config, name
-        )
+        TorchModelV2.__init__(self, obs_space, action_space, num_outputs, model_config, name)
         nn.Module.__init__(self)
 
-        hiddens = list(model_config.get("fcnet_hiddens", [])) + list(
-            model_config.get("post_fcnet_hiddens", [])
-        )
+        hiddens = list(model_config.get("fcnet_hiddens", [])) + list(model_config.get("post_fcnet_hiddens", []))
         activation = model_config.get("fcnet_activation")
         if not model_config.get("fcnet_hiddens", []):
             activation = model_config.get("post_fcnet_activation")
@@ -192,7 +185,7 @@ class CCModel(TorchModelV2, nn.Module):
         )
 
         self.view_requirements[CENTRALIZED_CRITIC_OBS] = ViewRequirement(
-            space=Box(obs_space.low[0], obs_space.high[0], shape=(centralized_critic_obs_dim,))
+            space=Box(obs_space.low[0], obs_space.high[0], shape=(centralized_critic_obs_dim, ))
         )
 
         self.view_requirements[SampleBatch.ACTIONS] = ViewRequirement(space=action_space)
@@ -216,8 +209,10 @@ class CCModel(TorchModelV2, nn.Module):
 
     @override(TorchModelV2)
     def value_function(self) -> TensorType:
-        raise ValueError("Centralized Value Function should not be called directly! "
-                         "Call central_value_function(cobs) instead!")
+        raise ValueError(
+            "Centralized Value Function should not be called directly! "
+            "Call central_value_function(cobs) instead!"
+        )
 
     def central_value_function(self, obs):
         assert self._value_branch is not None
@@ -259,9 +254,9 @@ def concat_ccppo_process(policy, sample_batch, other_agent_batches, odim, adim, 
 
             if nei_obs is not None:
                 start = odim + nei_count * other_info_dim
-                sample_batch[CENTRALIZED_CRITIC_OBS][index, start: start + odim] = nei_obs
+                sample_batch[CENTRALIZED_CRITIC_OBS][index, start:start + odim] = nei_obs
                 if policy.config[COUNTERFACTUAL]:
-                    sample_batch[CENTRALIZED_CRITIC_OBS][index, start + odim: start + odim + adim] = nei_act
+                    sample_batch[CENTRALIZED_CRITIC_OBS][index, start + odim:start + odim + adim] = nei_act
                     assert start + odim + adim == start + other_info_dim
                 else:
                     assert start + odim == start + other_info_dim
@@ -335,8 +330,7 @@ class CCPPOPolicy(PPOTorchPolicy):
             else:
                 # After initialization, fill centralized obs
                 sample_batch[CENTRALIZED_CRITIC_OBS] = np.zeros(
-                    (o.shape[0], self.centralized_critic_obs_dim),
-                    dtype=sample_batch[SampleBatch.CUR_OBS].dtype
+                    (o.shape[0], self.centralized_critic_obs_dim), dtype=sample_batch[SampleBatch.CUR_OBS].dtype
                 )
                 sample_batch[CENTRALIZED_CRITIC_OBS][:, :odim] = o
 
@@ -410,13 +404,10 @@ class CCPPOPolicy(PPOTorchPolicy):
             mask = None
             reduce_mean_valid = torch.mean
 
-        prev_action_dist = dist_class(
-            train_batch[SampleBatch.ACTION_DIST_INPUTS], model
-        )
+        prev_action_dist = dist_class(train_batch[SampleBatch.ACTION_DIST_INPUTS], model)
 
         logp_ratio = torch.exp(
-            curr_action_dist.logp(train_batch[SampleBatch.ACTIONS])
-            - train_batch[SampleBatch.ACTION_LOGP]
+            curr_action_dist.logp(train_batch[SampleBatch.ACTIONS]) - train_batch[SampleBatch.ACTION_LOGP]
         )
 
         # Only calculate kl loss if necessary (kl-coeff > 0.0).
@@ -432,10 +423,8 @@ class CCPPOPolicy(PPOTorchPolicy):
 
         surrogate_loss = torch.min(
             train_batch[Postprocessing.ADVANTAGES] * logp_ratio,
-            train_batch[Postprocessing.ADVANTAGES]
-            * torch.clamp(
-                logp_ratio, 1 - self.config["clip_param"], 1 + self.config["clip_param"]
-            ),
+            train_batch[Postprocessing.ADVANTAGES] *
+            torch.clamp(logp_ratio, 1 - self.config["clip_param"], 1 + self.config["clip_param"]),
         )
 
         # Compute a value function loss.
@@ -456,16 +445,12 @@ class CCPPOPolicy(PPOTorchPolicy):
             vf_loss2 = torch.pow(vf_clipped - train_batch[Postprocessing.VALUE_TARGETS], 2.0)
             vf_loss_clipped = torch.max(vf_loss1, vf_loss2)
         else:
-            vf_loss = torch.pow(
-                value_fn_out - train_batch[Postprocessing.VALUE_TARGETS], 2.0
-            )
+            vf_loss = torch.pow(value_fn_out - train_batch[Postprocessing.VALUE_TARGETS], 2.0)
             vf_loss_clipped = torch.clamp(vf_loss, 0, self.config["vf_clip_param"])
         mean_vf_loss = reduce_mean_valid(vf_loss_clipped)
 
         total_loss = reduce_mean_valid(
-            -surrogate_loss
-            + self.config["vf_loss_coeff"] * vf_loss_clipped
-            - self.entropy_coeff * curr_entropy
+            -surrogate_loss + self.config["vf_loss_coeff"] * vf_loss_clipped - self.entropy_coeff * curr_entropy
         )
 
         # Add mean_kl_loss (already processed through `reduce_mean_valid`),
@@ -517,7 +502,9 @@ def _test():
         sgd_minibatch_size=256,
         num_workers=0,
         # **{COUNTERFACTUAL: tune.grid_search([True, False])},
-        **{COUNTERFACTUAL: tune.grid_search([True, ])},
+        **{COUNTERFACTUAL: tune.grid_search([
+            True,
+        ])},
         # fuse_mode=tune.grid_search(["concat", "mf"])
         fuse_mode=tune.grid_search(["mf"])
     )

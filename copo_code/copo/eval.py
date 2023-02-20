@@ -80,8 +80,12 @@ def get_env_and_start_seed(trial_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=str, default="eval/demo_raw_checkpoints/copo", help="The path ending up with your exp_name.")
-    parser.add_argument("--num_episodes", type=int, default=20, help="How many episodes you want to run for a single checkpoint.")
+    parser.add_argument(
+        "--root", type=str, default="eval/demo_raw_checkpoints/copo", help="The path ending up with your exp_name."
+    )
+    parser.add_argument(
+        "--num_episodes", type=int, default=20, help="How many episodes you want to run for a single checkpoint."
+    )
     args = parser.parse_args()
 
     print("Evaluation begins. The results will be saved at: ", "./evaluate_results/")
@@ -119,15 +123,15 @@ if __name__ == '__main__':
             algo = root.split('/')[-1]
 
             ckpt_info = {
-                    "path": ckpt_file_path,
-                    "count": ckpt_count,
-                    "algo": root.split('/')[-1],
-                    "env": raw_env_name,
-                    "seed": start_seed,
-                    "trial": trial_name,
-                    "trial_path": trial_path,
-                    "should_wrap_copo_env": should_wrap_copo_env,
-                    "should_wrap_cc_env": should_wrap_cc_env
+                "path": ckpt_file_path,
+                "count": ckpt_count,
+                "algo": root.split('/')[-1],
+                "env": raw_env_name,
+                "seed": start_seed,
+                "trial": trial_name,
+                "trial_path": trial_path,
+                "should_wrap_copo_env": should_wrap_copo_env,
+                "should_wrap_cc_env": should_wrap_cc_env
             }
 
             # ckpt_info["config"] = ckpt_config
@@ -162,7 +166,9 @@ if __name__ == '__main__':
             svo_std=lcf_std
         )
 
-        print(f"\n === Evaluating Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']} ===")
+        print(
+            f"\n === Evaluating Algo-{ckpt_info['algo']}_Env-{formal_env_name}_Seed-{ckpt_info['seed']}_Ckpt-{ckpt_info['count']} ==="
+        )
         if ckpt_info["should_wrap_copo_env"]:
             print("We are using CoPO environment! The LCF is set to Mean {}, STD {}".format(lcf_mean, lcf_std))
 

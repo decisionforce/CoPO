@@ -12,10 +12,7 @@ from ray.rllib.policy import Policy
 
 
 class MultiAgentDrivingCallbacks(DefaultCallbacks):
-    def on_episode_start(
-            self, *, worker: RolloutWorker, base_env, policies, episode,
-            env_index, **kwargs
-    ):
+    def on_episode_start(self, *, worker: RolloutWorker, base_env, policies, episode, env_index, **kwargs):
         episode.user_data["velocity"] = defaultdict(list)
         episode.user_data["steering"] = defaultdict(list)
         episode.user_data["step_reward"] = defaultdict(list)
@@ -26,7 +23,7 @@ class MultiAgentDrivingCallbacks(DefaultCallbacks):
         episode.user_data["num_neighbours"] = defaultdict(list)
 
     def on_episode_step(
-            self, *, worker: RolloutWorker, base_env: BaseEnv, episode: MultiAgentEpisode, env_index: int, **kwargs
+        self, *, worker: RolloutWorker, base_env: BaseEnv, episode: MultiAgentEpisode, env_index: int, **kwargs
     ):
         active_keys = list(base_env.envs[env_index].vehicles.keys())
 
@@ -49,8 +46,8 @@ class MultiAgentDrivingCallbacks(DefaultCallbacks):
                 episode.user_data["num_neighbours"][k].append(len(info.get("neighbours", [])))
 
     def on_episode_end(
-            self, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[str, Policy], episode: MultiAgentEpisode,
-            **kwargs
+        self, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[str, Policy], episode: MultiAgentEpisode,
+        **kwargs
     ):
         keys = [k for k, _ in episode.agent_rewards.keys()]
         arrive_dest_list = []
