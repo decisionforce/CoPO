@@ -26,6 +26,7 @@ def _flatten_dict(dt, delimiter="/"):
             del dt[k]
     return dt
 
+
 def _parse(p):
     dataframe = []
     fn = p.split("/")[-1]
@@ -61,6 +62,7 @@ def parse(root):
         return None
     df = pd.concat(df)
     return df
+
 
 def smooth(data, num_points=200, interpolate_x="timesteps_total", interpolate_y=None, y_span=1, splitter="file_name"):
     data = data.copy()

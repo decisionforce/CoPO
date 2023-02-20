@@ -63,14 +63,16 @@ class IPPOConfig(PPOConfig):
         # assert isinstance(act_space, gym.spaces.Box)
         # Note that we can't set policy name to "default_policy" since by doing so
         # ray will record wrong per agent episode reward!
-        self.update_from_dict({"multiagent":
-            dict(
-                # Note that we have to use "default" because stupid RLLib has bug when
-                # we are using "default_policy" as the Policy ID.
-                policies={"default": PolicySpec(None, obs_space, act_space, {})},
-                policy_mapping_fn=lambda x: "default"
-            )
-        })
+        self.update_from_dict(
+            {
+                "multiagent": dict(
+                    # Note that we have to use "default" because stupid RLLib has bug when
+                    # we are using "default_policy" as the Policy ID.
+                    policies={"default": PolicySpec(None, obs_space, act_space, {})},
+                    policy_mapping_fn=lambda x: "default"
+                )
+            }
+        )
 
 
 class IPPOPolicy(PPOTorchPolicy):
@@ -105,13 +107,10 @@ class IPPOPolicy(PPOTorchPolicy):
             mask = None
             reduce_mean_valid = torch.mean
 
-        prev_action_dist = dist_class(
-            train_batch[SampleBatch.ACTION_DIST_INPUTS], model
-        )
+        prev_action_dist = dist_class(train_batch[SampleBatch.ACTION_DIST_INPUTS], model)
 
         logp_ratio = torch.exp(
-            curr_action_dist.logp(train_batch[SampleBatch.ACTIONS])
-            - train_batch[SampleBatch.ACTION_LOGP]
+            curr_action_dist.logp(train_batch[SampleBatch.ACTIONS]) - train_batch[SampleBatch.ACTION_LOGP]
         )
 
         # Only calculate kl loss if necessary (kl-coeff > 0.0).
@@ -127,10 +126,8 @@ class IPPOPolicy(PPOTorchPolicy):
 
         surrogate_loss = torch.min(
             train_batch[Postprocessing.ADVANTAGES] * logp_ratio,
-            train_batch[Postprocessing.ADVANTAGES]
-            * torch.clamp(
-                logp_ratio, 1 - self.config["clip_param"], 1 + self.config["clip_param"]
-            ),
+            train_batch[Postprocessing.ADVANTAGES] *
+            torch.clamp(logp_ratio, 1 - self.config["clip_param"], 1 + self.config["clip_param"]),
         )
 
         # Compute a value function loss.
@@ -148,16 +145,12 @@ class IPPOPolicy(PPOTorchPolicy):
             vf_loss2 = torch.pow(vf_clipped - train_batch[Postprocessing.VALUE_TARGETS], 2.0)
             vf_loss_clipped = torch.max(vf_loss1, vf_loss2)
         else:
-            vf_loss = torch.pow(
-                value_fn_out - train_batch[Postprocessing.VALUE_TARGETS], 2.0
-            )
+            vf_loss = torch.pow(value_fn_out - train_batch[Postprocessing.VALUE_TARGETS], 2.0)
             vf_loss_clipped = torch.clamp(vf_loss, 0, self.config["vf_clip_param"])
         mean_vf_loss = reduce_mean_valid(vf_loss_clipped)
 
         total_loss = reduce_mean_valid(
-            -surrogate_loss
-            + self.config["vf_loss_coeff"] * vf_loss_clipped
-            - self.entropy_coeff * curr_entropy
+            -surrogate_loss + self.config["vf_loss_coeff"] * vf_loss_clipped - self.entropy_coeff * curr_entropy
         )
 
         # Add mean_kl_loss (already processed through `reduce_mean_valid`),
@@ -216,11 +209,9 @@ def _test():
         # **{USE_CENTRALIZED_CRITIC: True},
         # fuse_mode=tune.grid_search(["concat", "mf"])
         # fuse_mode=tune.grid_search(["none"])
-
         train_batch_size=100,
         rollout_fragment_length=20,
         sgd_minibatch_size=30,
-
         old_value_loss=True
     )
     results = train(

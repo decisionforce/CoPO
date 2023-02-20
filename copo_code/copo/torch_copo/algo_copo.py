@@ -61,7 +61,6 @@ USE_DISTRIBUTIONAL_LCF = "use_distributional_lcf"
 
 
 class CoPOConfig(CCPPOConfig):
-
     def __init__(self, algo_class=None):
         super().__init__(algo_class=algo_class or CCPPOTrainer)
         self.initial_lcf_std = 0.1
@@ -72,21 +71,23 @@ class CoPOConfig(CCPPOConfig):
         self.use_centralized_critic = False
         self.fuse_mode = "none"
         self.old_value_loss = True
-        self.update_from_dict({
-            "model": {
-                "custom_model": "copo_model",
-            }})
+        self.update_from_dict({"model": {
+            "custom_model": "copo_model",
+        }})
 
     def validate(self):
         super().validate()
         assert self[USE_DISTRIBUTIONAL_LCF]
         if self[USE_DISTRIBUTIONAL_LCF]:
-            self.update_from_dict({
-                "env_config": {
-                    "return_native_reward": True,
-                    "lcf_dist": "normal",
-                    "lcf_normal_std": self["initial_lcf_std"]
-                }})
+            self.update_from_dict(
+                {
+                    "env_config": {
+                        "return_native_reward": True,
+                        "lcf_dist": "normal",
+                        "lcf_normal_std": self["initial_lcf_std"]
+                    }
+                }
+            )
             self.model["custom_model_config"][USE_DISTRIBUTIONAL_LCF] = self[USE_DISTRIBUTIONAL_LCF]
             self.model["custom_model_config"]["initial_lcf_std"] = self["initial_lcf_std"]
 
@@ -94,10 +95,9 @@ class CoPOConfig(CCPPOConfig):
 # ========== CoPO Model ==========
 class CoPOModel(CCModel):
     """Generic fully connected network implemented in ModelV2 API."""
-
     def __init__(
-            self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
-            model_config: ModelConfigDict, name: str
+        self, obs_space: gym.spaces.Space, action_space: gym.spaces.Space, num_outputs: int,
+        model_config: ModelConfigDict, name: str
     ):
         super(CoPOModel, self).__init__(obs_space, action_space, num_outputs, model_config, name)
 
@@ -140,17 +140,10 @@ class CoPOModel(CCModel):
         vf_layers = []
         for size in hiddens:
             vf_layers.append(
-                SlimFC(
-                    in_size=in_size,
-                    out_size=size,
-                    activation_fn=activation,
-                    initializer=normc_initializer(1.0)
-                )
+                SlimFC(in_size=in_size, out_size=size, activation_fn=activation, initializer=normc_initializer(1.0))
             )
             in_size = size
-        vf_layers.append(SlimFC(
-            in_size=in_size, out_size=1, initializer=normc_initializer(0.01), activation_fn=None
-        ))
+        vf_layers.append(SlimFC(in_size=in_size, out_size=1, initializer=normc_initializer(0.01), activation_fn=None))
         return nn.Sequential(*vf_layers)
 
     def get_nei_value(self, centralized_critic_obs):
@@ -242,10 +235,7 @@ class CoPOPolicy(CCPPOPolicy):
         if state:
             B = len(train_batch[SampleBatch.SEQ_LENS])
             max_seq_len = logits.shape[0] // B
-            mask = sequence_mask(
-                train_batch[SampleBatch.SEQ_LENS],
-                max_seq_len,
-                time_major=self.model.is_time_major())
+            mask = sequence_mask(train_batch[SampleBatch.SEQ_LENS], max_seq_len, time_major=self.model.is_time_major())
             mask = torch.reshape(mask, [-1])
             num_valid = torch.sum(mask)
 
@@ -258,8 +248,7 @@ class CoPOPolicy(CCPPOPolicy):
             reduce_mean_valid = torch.mean
 
         logp_ratio = torch.exp(
-            curr_action_dist.logp(train_batch[SampleBatch.ACTIONS]) -
-            train_batch[SampleBatch.ACTION_LOGP]
+            curr_action_dist.logp(train_batch[SampleBatch.ACTIONS]) - train_batch[SampleBatch.ACTION_LOGP]
         )
 
         adv = train_batch[GLOBAL_ADVANTAGES]
@@ -327,10 +316,7 @@ class CoPOPolicy(CCPPOPolicy):
         if state:
             B = len(train_batch[SampleBatch.SEQ_LENS])
             max_seq_len = logits.shape[0] // B
-            mask = sequence_mask(
-                train_batch[SampleBatch.SEQ_LENS],
-                max_seq_len,
-                time_major=model.is_time_major())
+            mask = sequence_mask(train_batch[SampleBatch.SEQ_LENS], max_seq_len, time_major=model.is_time_major())
             mask = torch.reshape(mask, [-1])
             num_valid = torch.sum(mask)
 
@@ -362,9 +348,7 @@ class CoPOPolicy(CCPPOPolicy):
         advantages = train_batch["normalized_advantages"]
         surrogate_loss = torch.min(
             advantages * logp_ratio,
-            advantages * torch.clamp(
-                logp_ratio, 1 - self.config["clip_param"], 1 + self.config["clip_param"]
-            )
+            advantages * torch.clamp(logp_ratio, 1 - self.config["clip_param"], 1 + self.config["clip_param"])
         )
         mean_policy_loss = reduce_mean_valid(-surrogate_loss)
 
@@ -372,6 +356,7 @@ class CoPOPolicy(CCPPOPolicy):
         assert self.config["use_critic"]
 
         if self.config["old_value_loss"]:
+
             def _compute_value_loss(current_vf, prev_vf, value_target):
                 vf_loss1 = torch.pow(current_vf - value_target, 2.0)
                 vf_clipped = prev_vf + torch.clamp(
@@ -384,9 +369,7 @@ class CoPOPolicy(CCPPOPolicy):
         else:
 
             def _compute_value_loss(current_vf, prev_vf, value_target):
-                vf_loss = torch.pow(
-                    current_vf - value_target, 2.0
-                )
+                vf_loss = torch.pow(current_vf - value_target, 2.0)
                 vf_loss_clipped = torch.clamp(vf_loss, 0, self.config["vf_clip_param"])
                 return vf_loss_clipped
 
@@ -412,11 +395,9 @@ class CoPOPolicy(CCPPOPolicy):
         global_mean_vf_loss = reduce_mean_valid(global_vf_loss)
 
         total_loss = reduce_mean_valid(
-            -surrogate_loss
-            + self.config["vf_loss_coeff"] * native_vf_loss
-            + self.config["vf_loss_coeff"] * nei_vf_loss
-            + self.config["vf_loss_coeff"] * global_vf_loss
-            - self.entropy_coeff * curr_entropy
+            -surrogate_loss + self.config["vf_loss_coeff"] * native_vf_loss +
+            self.config["vf_loss_coeff"] * nei_vf_loss + self.config["vf_loss_coeff"] * global_vf_loss -
+            self.entropy_coeff * curr_entropy
         )
 
         # Add mean_kl_loss (already processed through `reduce_mean_valid`),
@@ -483,9 +464,11 @@ class CoPOPolicy(CCPPOPolicy):
             new_std = self.model.lcf_std.item()
             assert abs(new_std - lcf_std) < 1e-5, (new_std, lcf_std, new_std - lcf_std)
         if my_name is not None:
-            print("In policy {}, latest LCF mean {}, std {}. Old mean {}. The update target {}".format(
-                my_name, new_mean, new_std, old_mean, lcf_parameters
-            ))
+            print(
+                "In policy {}, latest LCF mean {}, std {}. Old mean {}. The update target {}".format(
+                    my_name, new_mean, new_std, old_mean, lcf_parameters
+                )
+            )
 
     def postprocess_trajectory(self, sample_batch, other_agent_batches=None, episode=None):
         sample_batch = super(CoPOPolicy, self).postprocess_trajectory(sample_batch, other_agent_batches, episode)
@@ -556,7 +539,7 @@ class CoPOTrainer(CCPPOTrainer):
         for policy_id, batch in train_batch.policy_batches.items():
             used_lcf = batch["step_lcf"] * np.pi / 2
             batch["normalized_advantages"] = (
-                    np.cos(used_lcf) * batch[Postprocessing.ADVANTAGES] + np.sin(used_lcf) * batch[NEI_ADVANTAGE]
+                np.cos(used_lcf) * batch[Postprocessing.ADVANTAGES] + np.sin(used_lcf) * batch[NEI_ADVANTAGE]
             )
             batch["raw_normalized_advantages"] = batch["normalized_advantages"]
 
@@ -599,8 +582,8 @@ class CoPOTrainer(CCPPOTrainer):
         lcf_sgd_minibatch_size = self.config["lcf_sgd_minibatch_size"] or self.config["sgd_minibatch_size"]
         recorder = defaultdict(list)
         for i in range(self.config["lcf_num_iters"]):
-            for mb_id, minibatch in enumerate(
-                    minibatches(train_batch.policy_batches["default"], lcf_sgd_minibatch_size)):
+            for mb_id, minibatch in enumerate(minibatches(train_batch.policy_batches["default"],
+                                                          lcf_sgd_minibatch_size)):
                 ret = local_policy.meta_update(minibatch)
                 for k, v in ret.items():
                     recorder[k].append(v)
@@ -649,15 +632,10 @@ class CoPOTrainer(CCPPOTrainer):
             self.get_policy(policy_id).update_kl(kl_divergence)
 
             # Warn about excessively high value function loss
-            scaled_vf_loss = (
-                    self.config.vf_loss_coeff * policy_info[LEARNER_STATS_KEY]["vf_loss"]
-            )
+            scaled_vf_loss = (self.config.vf_loss_coeff * policy_info[LEARNER_STATS_KEY]["vf_loss"])
             policy_loss = policy_info[LEARNER_STATS_KEY]["policy_loss"]
-            if (
-                    log_once("ppo_warned_lr_ratio")
-                    and self.config.get("model", {}).get("vf_share_layers")
-                    and scaled_vf_loss > 100
-            ):
+            if (log_once("ppo_warned_lr_ratio") and self.config.get("model", {}).get("vf_share_layers")
+                    and scaled_vf_loss > 100):
                 logger.warning(
                     "The magnitude of your value function loss for policy: {} is "
                     "extremely large ({}) compared to the policy loss ({}). This "
@@ -668,10 +646,7 @@ class CoPOTrainer(CCPPOTrainer):
             # Warn about bad clipping configs.
             train_batch.policy_batches[policy_id].set_get_interceptor(None)
             mean_reward = train_batch.policy_batches[policy_id]["rewards"].mean()
-            if (
-                    log_once("ppo_warned_vf_clip")
-                    and mean_reward > self.config.vf_clip_param
-            ):
+            if (log_once("ppo_warned_vf_clip") and mean_reward > self.config.vf_clip_param):
                 self.warned_vf_clip = True
                 logger.warning(
                     f"The mean reward returned from the environment is {mean_reward}"
@@ -713,7 +688,6 @@ def _test():
         # **{USE_CENTRALIZED_CRITIC: True},
         # fuse_mode=tune.grid_search(["concat", "mf"])
         # fuse_mode=tune.grid_search(["none"])
-
         train_batch_size=100,
         rollout_fragment_length=20,
         sgd_minibatch_size=30

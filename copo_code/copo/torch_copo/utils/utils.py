@@ -61,11 +61,9 @@ def merge_dicts(d1, d2):
     return merged
 
 
-def deep_update(original,
-                new_dict,
-                new_keys_allowed=False,
-                allow_new_subkey_list=None,
-                override_all_if_type_changes=None):
+def deep_update(
+    original, new_dict, new_keys_allowed=False, allow_new_subkey_list=None, override_all_if_type_changes=None
+):
     """Updates original dict with values from new_dict recursively.
 
     If new key is introduced in new_dict, then if new_keys_allowed is not
@@ -143,10 +141,8 @@ def same_padding(in_size, filter_size, stride_size):
     out_height = np.ceil(float(in_height) / float(stride_height))
     out_width = np.ceil(float(in_width) / float(stride_width))
 
-    pad_along_height = int(
-        ((out_height - 1) * stride_height + filter_height - in_height))
-    pad_along_width = int(
-        ((out_width - 1) * stride_width + filter_width - in_width))
+    pad_along_height = int(((out_height - 1) * stride_height + filter_height - in_height))
+    pad_along_width = int(((out_width - 1) * stride_width + filter_width - in_width))
     pad_top = pad_along_height // 2
     pad_bottom = pad_along_height - pad_top
     pad_left = pad_along_width // 2
@@ -163,8 +159,7 @@ class SafeJSONEncoder(json.JSONEncoder):
 
     def default(self, value):
         try:
-            if (type(value).__module__ == np.__name__
-                    and isinstance(value, np.ndarray)):
+            if (type(value).__module__ == np.__name__ and isinstance(value, np.ndarray)):
                 return value.tolist()
 
             if isinstance(value, np.bool_):

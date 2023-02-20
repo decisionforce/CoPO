@@ -33,23 +33,19 @@ class CCEnv:
     neighbours' names and distances into info at each step.
     We should subclass this class to a base environment class.
     """
-
     @classmethod
     def default_config(cls):
         config = super(CCEnv, cls).default_config()
         # Note that this config is set to 40 in LCFEnv
         config["neighbours_distance"] = 40
 
-        config.update(dict(
-            communication=dict(
-                comm_method="none",
-                comm_size=4,
-                comm_neighbours=4,
-                add_pos_in_comm=False
-            ),
-            add_traffic_light=False,
-            traffic_light_interval=30,
-        ))
+        config.update(
+            dict(
+                communication=dict(comm_method="none", comm_size=4, comm_neighbours=4, add_pos_in_comm=False),
+                add_traffic_light=False,
+                traffic_light_interval=30,
+            )
+        )
 
         return config
 
@@ -76,14 +72,15 @@ class CCEnv:
             return old_action_space
         assert isinstance(old_action_space, Dict)
         new_action_space = Dict(
-            {k: Box(
-                low=single.low[0],
-                high=single.high[0],
-                dtype=single.dtype,
+            {
+                k: Box(
+                    low=single.low[0],
+                    high=single.high[0],
+                    dtype=single.dtype,
 
-                # We are not using self._comm_dim here!
-                shape=(single.shape[0] + self.config["communication"]["comm_size"],)
-            )
+                    # We are not using self._comm_dim here!
+                    shape=(single.shape[0] + self.config["communication"]["comm_size"], )
+                )
                 for k, single in old_action_space.spaces.items()
             }
         )
@@ -106,7 +103,7 @@ class CCEnv:
 
             if self.config["communication"][COMM_METHOD] != "none":
                 i[kkk][COMM_CURRENT_OBS] = []
-                for n in neighbours[: self.config["communication"]["comm_neighbours"]]:
+                for n in neighbours[:self.config["communication"]["comm_neighbours"]]:
                     if n in comm_actions:
                         if self.config["communication"]["add_pos_in_comm"]:
                             ego_vehicle = self.vehicles_including_just_terminated[kkk]
@@ -114,16 +111,14 @@ class CCEnv:
                             relative_position = ego_vehicle.projection(nei_vehicle.position - ego_vehicle.position)
                             dis = np.linalg.norm(relative_position)
                             extra_comm_obs = [
-                                dis / 20,
-                                ((relative_position[0] / dis) + 1) / 2,
-                                ((relative_position[1] / dis) + 1) / 2
+                                dis / 20, ((relative_position[0] / dis) + 1) / 2, ((relative_position[1] / dis) + 1) / 2
                             ]
                             tmp_comm_obs = np.concatenate([comm_actions[n], np.clip(np.asarray(extra_comm_obs), 0, 1)])
                         else:
                             tmp_comm_obs = comm_actions[n]
                         i[kkk][COMM_CURRENT_OBS].append(tmp_comm_obs)
                     else:
-                        i[kkk][COMM_CURRENT_OBS].append(np.zeros((self._comm_dim,)))
+                        i[kkk][COMM_CURRENT_OBS].append(np.zeros((self._comm_dim, )))
 
         return o, r, d, i
 
@@ -186,7 +181,6 @@ class LCFEnv(CCEnv):
 
                 # Whether to force set the lcf
                 force_lcf=-100,
-
                 enable_copo=True
             )
         )
@@ -246,10 +240,7 @@ class LCFEnv(CCEnv):
 
                 # Note that original metadrive obs space is [0, 1]
                 space = Box(
-                    low=np.array([-1.0] * length),
-                    high=np.array([1.0] * length),
-                    shape=(length,),
-                    dtype=space.dtype
+                    low=np.array([-1.0] * length), high=np.array([1.0] * length), shape=(length, ), dtype=space.dtype
                 )
                 space._shape = space.shape
                 return space
@@ -291,10 +282,9 @@ class LCFEnv(CCEnv):
             for agent_name, v in self.vehicles_including_just_terminated.items():
                 if agent_name not in obses:
                     continue
-                new_obses[agent_name] = np.concatenate([
-                    obses[agent_name],
-                    self.get_agent_traffic_light_msg(v.position)
-                ])
+                new_obses[agent_name] = np.concatenate(
+                    [obses[agent_name], self.get_agent_traffic_light_msg(v.position)]
+                )
             obses = new_obses
 
         ret = {}
@@ -306,12 +296,7 @@ class LCFEnv(CCEnv):
         if self.config["communication"][COMM_METHOD] != "none":
             for k, old_obs in ret.items():
                 yet_another_new_obs[k] = np.concatenate(
-                    [
-                        old_obs,
-                        np.zeros((
-                            self._comm_dim * self.config["communication"]["comm_neighbours"],
-                        ))
-                    ], axis=-1
+                    [old_obs, np.zeros((self._comm_dim * self.config["communication"]["comm_neighbours"], ))], axis=-1
                 ).astype(np.float32)
 
             ret = yet_another_new_obs
@@ -341,17 +326,16 @@ class LCFEnv(CCEnv):
             i[agent_name]["global_rewards"] = global_reward
 
             if self.config["add_traffic_light"]:
-                o[agent_name] = np.concatenate([
-                    o[agent_name],
-                    self.get_agent_traffic_light_msg(
-                        self.vehicles_including_just_terminated[agent_name].position
-                    )
-                ])
+                o[agent_name] = np.concatenate(
+                    [
+                        o[agent_name],
+                        self.get_agent_traffic_light_msg(self.vehicles_including_just_terminated[agent_name].position)
+                    ]
+                )
 
             # add LCF into observation, also update LCF map and info.
             agent_lcf, new_obs[agent_name] = self._add_lcf(
-                agent_obs=o[agent_name],
-                lcf=self.lcf_map[agent_name] if agent_name in self.lcf_map else None
+                agent_obs=o[agent_name], lcf=self.lcf_map[agent_name] if agent_name in self.lcf_map else None
             )
             if agent_name not in self.lcf_map:
                 # The agent LCF is set for the whole episode
@@ -382,7 +366,7 @@ class LCFEnv(CCEnv):
                 comm_obs = i[k][COMM_CURRENT_OBS]
                 if len(comm_obs) < self.config["communication"]["comm_neighbours"]:
                     comm_obs.extend(
-                        [np.zeros((self._comm_dim,))] *
+                        [np.zeros((self._comm_dim, ))] *
                         (self.config["communication"]["comm_neighbours"] - len(comm_obs))
                     )
                 yet_another_new_obs[k] = np.concatenate([old_obs] + comm_obs).astype(np.float32)
@@ -522,8 +506,11 @@ def get_latent_env(env_class):
                 latent = np.zeros(self.config["latent_dim"])
             else:
                 if self.engine.global_seed not in self.latent_dict:
-                    print("latent_dict: {} ({}), seed: {}".format(
-                        self.latent_dict.keys(), len(self.latent_dict), self.engine.global_seed))
+                    print(
+                        "latent_dict: {} ({}), seed: {}".format(
+                            self.latent_dict.keys(), len(self.latent_dict), self.engine.global_seed
+                        )
+                    )
                 latent = self.latent_dict[self.engine.global_seed][agent_name]
 
             return np.concatenate([latent, obs], axis=-1)
@@ -556,12 +543,7 @@ def get_latent_env(env_class):
                 def observation_space(self):
                     space = super(NewObs, self).observation_space
                     length = space.shape[0] + latent_dim
-                    space = Box(
-                        low=float("-inf"),
-                        high=float("+inf"),
-                        shape=(length,),
-                        dtype=space.dtype
-                    )
+                    space = Box(low=float("-inf"), high=float("+inf"), shape=(length, ), dtype=space.dtype)
                     space._shape = space.shape
                     return space
 

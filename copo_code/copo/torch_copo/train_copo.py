@@ -19,14 +19,16 @@ if __name__ == "__main__":
     config = dict(
         # ===== Environmental Setting =====
         # We can grid-search the environmental parameters!
-        env=tune.grid_search([
-            # get_rllib_compatible_env(get_lcf_env(MultiAgentParkingLotEnv)),
-            # get_rllib_compatible_env(get_lcf_env(MultiAgentRoundaboutEnv)),
-            # get_rllib_compatible_env(get_lcf_env(MultiAgentTollgateEnv)),
-            # get_rllib_compatible_env(get_lcf_env(MultiAgentBottleneckEnv)),
-            get_rllib_compatible_env(get_lcf_env(MultiAgentIntersectionEnv)),
-            # get_rllib_compatible_env(get_lcf_env(MultiAgentMetaDrive)),
-        ]),
+        env=tune.grid_search(
+            [
+                # get_rllib_compatible_env(get_lcf_env(MultiAgentParkingLotEnv)),
+                # get_rllib_compatible_env(get_lcf_env(MultiAgentRoundaboutEnv)),
+                # get_rllib_compatible_env(get_lcf_env(MultiAgentTollgateEnv)),
+                # get_rllib_compatible_env(get_lcf_env(MultiAgentBottleneckEnv)),
+                get_rllib_compatible_env(get_lcf_env(MultiAgentIntersectionEnv)),
+                # get_rllib_compatible_env(get_lcf_env(MultiAgentMetaDrive)),
+            ]
+        ),
         env_config=dict(
             # start_seed=tune.grid_search([5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]),
             neighbours_distance=40,

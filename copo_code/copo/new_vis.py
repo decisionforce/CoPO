@@ -50,8 +50,9 @@ def get_env(env, use_native_render, should_wrap_copo_env, should_wrap_cc_env):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--env", default="inter", type=str,
-                        choices=["inter", "round", "tollgate", "parking", "pgmap", "bottle"])
+    parser.add_argument(
+        "--env", default="inter", type=str, choices=["inter", "round", "tollgate", "parking", "pgmap", "bottle"]
+    )
     parser.add_argument("--algo", default="copo", type=str, choices=["cl", "ippo", "copo", "ccppomf", "ccppoconcat"])
     parser.add_argument("--use_native_render", action="store_true")
     args = parser.parse_args()
@@ -71,7 +72,8 @@ if __name__ == "__main__":
     assert ckpt_folder_path, f"Can't find {model_name_prefix} in {'new_best_checkpoints'}"
     succ = p.split("_")[-1]
     print(f"Found checkpoint with prefix {model_name_prefix}. The success rate should be around: {succ}")
-    ckpt_path = [p for p in os.listdir(ckpt_folder_path) if p.startswith("checkpoint") and not p.endswith("metadata")][0]
+    ckpt_path = [p for p in os.listdir(ckpt_folder_path)
+                 if p.startswith("checkpoint") and not p.endswith("metadata")][0]
     ckpt_path = os.path.join(ckpt_folder_path, ckpt_path)
 
     should_wrap_cc_env = "ccppo" in algo

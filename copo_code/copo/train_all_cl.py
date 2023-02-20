@@ -39,7 +39,6 @@ if __name__ == "__main__":
         # happens in the early stage of CL training, but the checkpoint at that time has
         # poor test-time performance!
         # keep_checkpoints_num=3,
-
         stop=stop,
         config=config,
         num_gpus=args.num_gpus,
