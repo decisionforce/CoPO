@@ -74,6 +74,8 @@ python ./copo_code/copo/torch_copo/train_copo.py
 
 ---
 
+(The below is old guideline for running TF version)
+
 As a quick start, you can start training CoPO in Intersection environment immediately after installation by running:
 
 ```
