@@ -51,6 +51,7 @@ pip install -e .
 
 # For running torch implementation, install torch and update ray:
 pip install -U ray==2.2.0 "ray[rllib]==2.2.0"
+pip install -U "numpy<1.24.0"
 ```
 
 Please install latest [MetaDrive](https://github.com/decisionforce/metadrive).
@@ -58,6 +59,19 @@ Note that we do not support `gym>=0.20.0`. In `setup.py` we specify we are using
 
 
 ## Training
+
+> **note**
+> We update torch version of our algorithms compatible with ray=2.2.0!!
+
+Please take a look on the scripts at:
+
+```bash
+python ./copo_code/copo/torch_copo/train_ccppo.py
+python ./copo_code/copo/torch_copo/train_ippo.py
+python ./copo_code/copo/torch_copo/train_copo.py
+```
+
+---
 
 As a quick start, you can start training CoPO in Intersection environment immediately after installation by running:
 
