@@ -7,7 +7,7 @@
 
 ```diff
 Changelog:
-+ Feb 19, 2023: Upload torch implementation of CoPO, compatible with ray=2.2.0.
++ Feb 19, 2023: 🎉 Upload torch implementation of CoPO, compatible with ray=2.2.0.
 + Oct 22, 2022: Update latest experiments results, curves and models!
 + June 22, 2022: Update README to include FAQ, update evaluate population script
 + June 23, 2022: Update a demo script to draw population evaluation results (See FAQ section)
@@ -60,8 +60,9 @@ Note that we do not support `gym>=0.20.0`. In `setup.py` we specify we are using
 
 ## Training
 
-> **note**
-> We update torch version of our algorithms compatible with ray=2.2.0!!
+```diff
++ 🎉 We update torch version of our algorithms compatible with ray=2.2.0!!
+```
 
 Please take a look on the scripts at:
 
