@@ -7,7 +7,8 @@
 
 ```diff
 Changelog:
-+ October 22, 2022: Update latest experiments results, curves and models!
++ Feb 19, 2023: Upload torch implementation of CoPO, compatible with ray=2.2.0.
++ Oct 22, 2022: Update latest experiments results, curves and models!
 + June 22, 2022: Update README to include FAQ, update evaluate population script
 + June 23, 2022: Update a demo script to draw population evaluation results (See FAQ section)
 + July 7, 2022: Remove redundant files and use `train_all_*` scripts
@@ -47,6 +48,9 @@ pip install torch  # Make sure your torch is successfully installed! Especially 
 git clone https://github.com/decisionforce/CoPO
 cd CoPO/copo_code
 pip install -e .
+
+# For running torch implementation, install torch and update ray:
+pip install -U ray==2.2.0 "ray[rllib]==2.2.0"
 ```
 
 Please install latest [MetaDrive](https://github.com/decisionforce/metadrive).
