@@ -72,6 +72,8 @@ python ./copo_code/copo/torch_copo/train_ippo.py
 python ./copo_code/copo/torch_copo/train_copo.py
 ```
 
+Note that you can even kickoff training at Macbook with this code!
+
 ---
 
 (The below is old guideline for running TF version)
