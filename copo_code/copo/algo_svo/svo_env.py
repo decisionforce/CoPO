@@ -177,7 +177,7 @@ class SVOEnv:
             #     agent_name, svo * 90, self.current_svo_mean * 90, self.current_svo_std))
 
         output_svo = (svo + 1) / 2
-        return svo, np.concatenate([o, [output_svo]])
+        return svo, np.concatenate([o, [output_svo]]).astype(np.float32)
 
     def set_svo_dist(self, mean, std):
         assert self.config["svo_dist"] == "normal"
