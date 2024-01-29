@@ -1,7 +1,7 @@
 # Code for Coordinated Policy Optimization
 
 [**Webpage**](https://decisionforce.github.io/CoPO) | [**Code**](https://github.com/decisionforce/CoPO) |  [**Paper**](https://arxiv.org/pdf/2110.13827.pdf) | [**Talk (English)**](https://youtu.be/sOw43l8lwxE) | [**Talk (Chinese)**](https://www.bilibili.com/video/BV1gr4y1C7Ab)
-| [**Results&Models**](https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL)
+| [**Results&Models**](benchmarks/MetaDrive-0.2.5)
 
 
 
@@ -26,7 +26,9 @@ Please following the tutorial below to kickoff the reproduction of our results.
 ## 🎉 Results, curves and models
 
 Please refer to this link for latest training and evaluation results, learning curves, scripts to draw figures and models:
-https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL
+
+* [benchmarks/MetaDrive-0.2.5](benchmarks/MetaDrive-0.2.5)
+
 
 
 ## Installation
