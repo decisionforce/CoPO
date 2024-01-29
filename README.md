@@ -1,12 +1,13 @@
 # Code for Coordinated Policy Optimization
 
 [**Webpage**](https://decisionforce.github.io/CoPO) | [**Code**](https://github.com/decisionforce/CoPO) |  [**Paper**](https://arxiv.org/pdf/2110.13827.pdf) | [**Talk (English)**](https://youtu.be/sOw43l8lwxE) | [**Talk (Chinese)**](https://www.bilibili.com/video/BV1gr4y1C7Ab)
-| [**Results&Models**](https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL)
+| [**Results&Models**](benchmarks/MetaDrive-0.2.5)
 
 
 
 ```diff
 Changelog:
++ Jan 29, 2024: Fix dependencies issue.
 + Feb 19, 2023: 🎉 Upload torch implementation of CoPO, compatible with ray=2.2.0.
 + Oct 22, 2022: Update latest experiments results, curves and models!
 + June 22, 2022: Update README to include FAQ, update evaluate population script
@@ -25,7 +26,9 @@ Please following the tutorial below to kickoff the reproduction of our results.
 ## 🎉 Results, curves and models
 
 Please refer to this link for latest training and evaluation results, learning curves, scripts to draw figures and models:
-https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL
+
+* [benchmarks/MetaDrive-0.2.5](benchmarks/MetaDrive-0.2.5)
+
 
 
 ## Installation
@@ -35,11 +38,8 @@ https://github.com/metadriverse/metadrive-benchmark/tree/main/MARL
 conda create -n copo python=3.7
 conda activate copo
 
-# Install latest MetaDrive
-git clone https://github.com/decisionforce/metadrive
-cd metadrive
-pip install -e .
-cd ..
+# Install MetaDrive version 0.2.5
+pip install git+https://github.com/metadriverse/metadrive.git@releases/0.2.5
 
 # Install dependency
 pip install torch  # Make sure your torch is successfully installed! Especially when using GPU!
@@ -49,9 +49,14 @@ git clone https://github.com/decisionforce/CoPO
 cd CoPO/copo_code
 pip install -e .
 
-# For running torch implementation, install torch and update ray:
+# For **running torch implementation**, install torch and update ray:
+# (If you are using TF implementation, you might need to follow ray==1.2.0.
 pip install -U ray==2.2.0 "ray[rllib]==2.2.0"
 pip install -U "numpy<1.24.0"
+pip uninstall opencv-python
+pip uninstall opencv-python-headless
+pip install opencv-python==4.5.5.64
+pip install pydantic==1.9.0
 ```
 
 Please install latest [MetaDrive](https://github.com/decisionforce/metadrive).
@@ -67,6 +72,7 @@ Note that we do not support `gym>=0.20.0`. In `setup.py` we specify we are using
 Please take a look on the scripts at:
 
 ```bash
+cd ~/CoPO  # Go to repo root.
 python ./copo_code/copo/torch_copo/train_ccppo.py
 python ./copo_code/copo/torch_copo/train_ippo.py
 python ./copo_code/copo/torch_copo/train_copo.py
@@ -237,6 +243,35 @@ you can also modify the `num_gpus` config WITHIN the config dict.
 The `num_gpus` within config dict specifies the number of GPU each trial will consume.
 By default, `config["num_gpus"]=0.5` means each trial will use 0.5 GPU. If your computer has 4 gpus and sufficient cpus, then RLLib will
 launch 8 concurrent trials. Note that those specifications does not mean true resource consumption.
+
+
+### Opencv-python error
+
+```bash
+AttributeError: module 'cv2' has no attribute 'gapi_wip_gst_GStreamerPipeline'
+```
+
+Try:
+
+```bash
+pip uninstall opencv-python
+pip uninstall opencv-python-headless
+pip install opencv-python==4.5.5.64
+```
+
+
+### Ray dashboard error
+
+```bash
+TypeError: __init_subclass__() takes no keyword arguments
+```
+
+Try:
+
+```bash
+pydantic==1.9.0
+```
+
 
 
 
